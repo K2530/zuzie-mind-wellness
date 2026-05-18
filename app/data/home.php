@@ -41,16 +41,16 @@ $videoCategories = [
     ['id' => 'selfdev', 'label' => 'พัฒนาตัวเอง', 'key' => 'catSelfDev'],
 ];
 
-// 2. จัดกลุ่มวิดีโอ (mock) โดยใส่ 'category' ให้ตรงกับ id ของหมวดหมู่ด้านบน
+// 2. จัดกลุ่มวิดีโอ (mock) โดยใส่ 'category' และเพิ่ม 'source' กลับเข้าไปเพื่อให้ index.php ทำงานได้
 $videos = [
-    ['title' => '5 สัญญาณว่าคุณกำลังเจอความสัมพันธ์เป็นพิษ', 'time' => '01:09', 'category' => 'relationship'],
-    ['title' => 'วิธีพูดกับคนที่ทำร้ายจิตใจเรา', 'time' => '04:31', 'category' => 'relationship'],
-    ['title' => 'เทคนิคจัดการความคิดลบ', 'time' => '03:41', 'category' => 'anxiety'],
-    ['title' => 'ทำไมเราถึงเลิกคน Toxic ไม่ได้', 'time' => '00:35', 'category' => 'relationship'],
-    ['title' => '5 วิธีเริ่มรักตัวเองในวันที่แย่ที่สุด', 'time' => '06:12', 'category' => 'selfdev'],
-    ['title' => 'เยียวยาใจจากความสัมพันธ์ Toxic', 'time' => '03:30', 'category' => 'depression'],
-    ['title' => 'Narcissist คืออะไร? ทำไมเราต้องระวัง', 'time' => '04:02', 'category' => 'relationship'],
-    ['title' => 'ฝึกหายใจ 4-7-8 ลดความวิตกกังวล', 'time' => '03:30', 'category' => 'anxiety'],
+    ['title' => '5 สัญญาณว่าคุณกำลังเจอความสัมพันธ์เป็นพิษ', 'time' => '01:09', 'category' => 'relationship', 'source' => 'YouTube'],
+    ['title' => 'วิธีพูดกับคนที่ทำร้ายจิตใจเรา', 'time' => '04:31', 'category' => 'relationship', 'source' => 'YouTube'],
+    ['title' => 'เทคนิคจัดการความคิดลบ', 'time' => '03:41', 'category' => 'anxiety', 'source' => 'TikTok'],
+    ['title' => 'ทำไมเราถึงเลิกคน Toxic ไม่ได้', 'time' => '00:35', 'category' => 'relationship', 'source' => 'Instagram'],
+    ['title' => '5 วิธีเริ่มรักตัวเองในวันที่แย่ที่สุด', 'time' => '06:12', 'category' => 'selfdev', 'source' => 'YouTube'],
+    ['title' => 'เยียวยาใจจากความสัมพันธ์ Toxic', 'time' => '03:30', 'category' => 'depression', 'source' => 'Facebook'],
+    ['title' => 'Narcissist คืออะไร? ทำไมเราต้องระวัง', 'time' => '04:02', 'category' => 'relationship', 'source' => 'YouTube'],
+    ['title' => 'ฝึกหายใจ 4-7-8 ลดความวิตกกังวล', 'time' => '03:30', 'category' => 'anxiety', 'source' => 'TikTok'],
 ];
 
 $hashtags = [
