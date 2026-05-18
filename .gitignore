@@ -1,0 +1,11 @@
+node_modules/
+vendor/
+.env
+.env.*
+*.log
+database.sql
+scripts/
+config/database.php
+public/assets/css/app.css.map
+.DS_Store
+Thumbs.db

@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@source "../../public";
+@source "../../app";
+@source "../../api";
+
+@theme {
+  --font-sans: "Prompt", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Prompt", ui-sans-serif, system-ui, sans-serif;
+  --color-reseda: #6b705c;
+  --color-desert: #ddbea9;
+  --color-ash: #b7b7a4;
+  --color-persian: #c58c6d;
+  --color-almond: #f1e3d3;
+  --color-ink: #2f332a;
+  --color-milk: #fffcf8;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #fffcf8;
+    color: #2f332a;
+    font-family: var(--font-sans);
+  }
+
+  a,
+  button,
+  input {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .container-soft {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-8;
+    max-width: 95rem;
+  }
+
+  .container-header {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-8;
+    max-width: 100rem;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-reseda px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-ink focus:outline-none focus:ring-2 focus:ring-reseda/30;
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-reseda/25 bg-white/90 px-5 py-3 text-sm font-semibold text-ink shadow-sm transition hover:border-reseda hover:bg-almond/70 focus:outline-none focus:ring-2 focus:ring-reseda/20;
+  }
+
+  .btn-consult {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[#705347] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#5d4238] focus:outline-none focus:ring-2 focus:ring-[#705347]/30;
+  }
+
+  .btn-line {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-[#40c947] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#2da934] focus:outline-none focus:ring-2 focus:ring-[#40c947]/30;
+  }
+
+  .btn-line::before {
+    content: "LINE";
+    @apply flex h-6 w-6 items-center justify-center rounded-full bg-white text-[8px] font-black leading-none text-[#40c947];
+  }
+
+  .pill {
+    @apply inline-flex min-h-10 items-center justify-center rounded-full border border-reseda/25 bg-white/80 px-4 text-sm font-medium text-ink transition hover:border-reseda hover:bg-almond;
+  }
+
+  .soft-card {
+    @apply rounded-lg border border-reseda/10 bg-white/88 shadow-[0_18px_45px_rgba(83,76,65,0.08)];
+  }
+
+  .section-kicker {
+    @apply inline-flex rounded-full border border-desert/70 bg-almond/70 px-4 py-2 text-sm font-medium text-reseda;
+  }
+
+  .icon-shell {
+    @apply flex h-12 w-12 items-center justify-center text-reseda;
+  }
+
+  .icon-shell svg {
+    @apply h-10 w-10 stroke-[1.45];
+  }
+
+  .feature-image {
+    @apply h-32 rounded-md bg-cover;
+  }
+
+  .service-mini-card {
+    @apply relative min-h-[156px] overflow-hidden rounded-lg border border-reseda/10 bg-white shadow-[0_14px_38px_rgba(83,76,65,0.08)];
+  }
+
+  .service-mini-card::after {
+    content: "";
+    @apply absolute inset-y-0 right-0 w-[58%] bg-cover bg-center;
+  }
+
+  .service-mini-card::before {
+    content: "";
+    @apply absolute inset-0 z-10 bg-gradient-to-r from-white via-white/88 to-white/12;
+  }
+
+  .service-mini-card > div {
+    @apply relative z-20 max-w-[52%] p-6;
+  }
+
+  .service-card-cta {
+    @apply h-12 w-[132px] px-3 py-2 text-center text-xs leading-snug whitespace-normal;
+  }
+}

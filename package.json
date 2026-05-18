@@ -1,0 +1,32 @@
+{
+  "name": "zuzie-mind-wellness",
+  "version": "1.0.0",
+  "private": true,
+  "main": "public/index.php",
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/assets/css/app.css --minify",
+    "watch": "npx @tailwindcss/cli -i ./src/css/input.css -o ./public/assets/css/app.css --watch",
+    "serve": "php -S localhost:8000 -t public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frongkung1/zuzie-mind-wellness.git"
+  },
+  "keywords": [
+    "zuzie",
+    "mind-wellness",
+    "tailwindcss",
+    "php"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/frongkung1/zuzie-mind-wellness/issues"
+  },
+  "homepage": "https://github.com/frongkung1/zuzie-mind-wellness#readme",
+  "description": "Zuzie Mind Wellness bilingual PHP mockup home page.",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.0",
+    "tailwindcss": "^4.3.0"
+  }
+}
