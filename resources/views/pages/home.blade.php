@@ -12,7 +12,7 @@
           <p class="mt-2 font-serif text-4xl font-light italic text-persian sm:text-5xl" data-i18n="heroScript"></p>
           <p class="mt-7 max-w-lg text-base leading-8 text-ink sm:text-lg" data-i18n="heroCopy"></p>
           <div class="mt-8 grid gap-3 sm:grid-cols-3">
-            <a href="{{ route('assessment') }}" class="btn-primary" data-i18n="startAssessment"></a>
+            <a href="#assessment" class="btn-primary" data-i18n="startAssessment"></a>
             <a href="#booking" class="btn-consult" data-i18n="talkPsych"></a>
             <a href="{{ route('videos') }}" class="btn-secondary" data-i18n="heroVideoCta"></a>
           </div>
@@ -35,7 +35,7 @@
       <div>
         <h2 class="text-3xl font-bold leading-tight sm:text-4xl" data-i18n="assessTitle"></h2>
         <p class="mt-5 text-base leading-7 text-ink/72" data-i18n="assessCopy"></p>
-        <a href="{{ route('assessment') }}" class="btn-primary mt-7" data-i18n="viewAllAssessments"></a>
+        <a href="#assessment" class="btn-primary mt-7" data-i18n="viewAllAssessments"></a>
       </div>
 
       <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -46,7 +46,7 @@
               <p class="text-sm text-ink/65" data-i18n="assessmentLabel"></p>
               <h3 class="mt-1 text-xl font-bold" data-i18n="{{ $card['key'] }}"></h3>
               <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70" data-i18n="{{ $card['desc'] }}"></p>
-              <a href="{{ route('assessment') }}" class="btn-secondary mt-4 w-full" data-i18n="startNow"></a>
+              <a href="#booking" class="btn-secondary mt-4 w-full" data-i18n="startNow"></a>
             </div>
           </article>
         @endforeach
