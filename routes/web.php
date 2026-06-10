@@ -295,3 +295,27 @@ Route::get('/blogs/{id}', function ($id) use ($securityHeaders) {
         ])
         ->withHeaders($securityHeaders);
 })->name('article');
+
+Route::get('/services', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.services', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('services');
+
+Route::get('/contact', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.contact', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('contact');
+
+Route::get('/community', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.community', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('community');

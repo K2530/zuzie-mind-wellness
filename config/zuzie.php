@@ -4,13 +4,13 @@ return [
     'nav_items' => [
         ['href' => '/#home', 'key' => 'navHome'],
         ['href' => '/assessment', 'key' => 'navAssessment'],
-        ['href' => '/#services', 'key' => 'navServices'],
+        ['href' => '/services', 'key' => 'navServices'],
         ['href' => '/courses', 'key' => 'navCourses'],
         ['href' => '/videos', 'key' => 'navVideos'],
         ['href' => '/hashtags', 'key' => 'navHashtags'],
         ['href' => '/blogs', 'key' => 'navArticles'],
         ['href' => '/booking', 'key' => 'navBooking'],
-        ['href' => '/#contact', 'key' => 'navContact'],
+        ['href' => '/contact', 'key' => 'navContact'],
     ],
 
     'trust_items' => [

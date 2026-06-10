@@ -80,7 +80,7 @@
         </div>
         <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <?php $__currentLoopData = $videos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $video): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <article class="group">
+            <a href="<?php echo e(route('video.show', $index)); ?>" class="group block">
               <div class="relative overflow-hidden rounded-lg bg-reseda">
                 <img src="<?php echo e(asset('assets/images/hero-woman-tea.png')); ?>" alt="" class="h-36 w-full object-cover opacity-75 transition group-hover:scale-105 <?php echo e($index % 2 ? 'object-[72%_48%]' : 'object-[62%_44%]'); ?>">
                 <div class="absolute inset-0 bg-gradient-to-t from-ink/68 to-transparent"></div>
@@ -88,7 +88,7 @@
               </div>
               <h3 class="mt-3 line-clamp-2 text-sm font-bold leading-6"><?php echo e($video['title']); ?></h3>
               <p class="mt-1 text-sm text-ink/55"><?php echo e($video['source']); ?></p>
-            </article>
+            </a>
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
       </div>

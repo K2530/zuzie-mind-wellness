@@ -1,5 +1,5 @@
-<header class="sticky top-0 z-40 border-b border-reseda/10 bg-white/92 backdrop-blur">
-  <div class="container-header flex min-h-20 items-center justify-between gap-3">
+<header id="main-header" class="sticky top-0 z-40 border-b border-reseda/10 bg-white/92 backdrop-blur transition-all duration-300">
+  <div id="header-container" class="container-header flex min-h-20 items-center justify-between gap-3 transition-all duration-300">
     <a href="<?php echo e(route('home')); ?>#home" class="shrink-0 leading-none" aria-label="Zuzie Mind Wellness">
       <span class="block font-serif text-4xl leading-8 tracking-normal text-reseda">Zuzie</span>
       <span class="block text-[10px] font-semibold uppercase tracking-[0.28em] text-reseda/70">Mind Wellness</span>

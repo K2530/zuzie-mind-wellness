@@ -43,18 +43,18 @@
         <div class="flex items-center gap-4 mt-8 pt-8 border-t border-reseda/10">
           <button class="flex items-center gap-2 text-ink/70 hover:text-[#536442] transition font-bold text-sm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-            บันทึกไว้ดูทีหลัง
+            <span data-i18n="save">บันทึก</span>
           </button>
           <button class="flex items-center gap-2 text-ink/70 hover:text-[#536442] transition font-bold text-sm">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.632l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-            แชร์วิดีโอนี้
+            <span data-i18n="share">แชร์</span>
           </button>
         </div>
       </div>
 
       <!-- Related Videos -->
       <div>
-        <h3 class="text-xl font-bold text-ink mb-6">วิดีโอที่เกี่ยวข้อง</h3>
+        <h3 class="text-xl font-bold text-ink mb-6" data-i18n="relVideos">วิดีโออื่นๆ ที่เกี่ยวข้อง</h3>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           @foreach ($relatedVideos as $index => $relVideo)
             <a href="{{ route('video.show', $index) }}" class="group block">

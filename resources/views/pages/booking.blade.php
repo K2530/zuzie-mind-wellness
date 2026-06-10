@@ -7,30 +7,23 @@
       
       <!-- Header -->
       <div class="text-center mb-10">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mb-2">จองคิวปรึกษา</h1>
-        <p class="text-ink/70">เลือกผู้เชี่ยวชาญและเวลาที่สะดวก</p>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mb-2" data-i18n="bookingTitle">จองคิวปรึกษา</h1>
+        <p class="text-ink/70" data-i18n="bookingSubtitle">เลือกผู้เชี่ยวชาญและเวลาที่สะดวก</p>
       </div>
 
       <!-- Progress Steps -->
-      <div class="flex items-center justify-center mb-12 overflow-x-auto text-[13px] sm:text-sm font-bold whitespace-nowrap px-4">
-        <div class="flex items-center text-ink">
-          <div class="w-6 h-6 rounded-full bg-[#536442] text-white flex items-center justify-center mr-2 text-xs">1</div>
-          <span>เลือกบริการ</span>
+      <div class="flex items-center justify-between text-sm sm:text-base font-bold relative z-10 mb-12">
+        <div class="flex flex-col items-center gap-2 text-[#536442]">
+          <div class="w-10 h-10 rounded-full bg-[#f4ebd0] border-2 border-[#536442] flex items-center justify-center">1</div>
+          <span data-i18n="bookStep1">จองคิว</span>
         </div>
-        <div class="w-8 sm:w-16 h-px bg-reseda/20 mx-2 sm:mx-4"></div>
-        <div class="flex items-center text-[#536442]">
-          <div class="w-6 h-6 rounded-full bg-[#536442] text-white flex items-center justify-center mr-2 text-xs">2</div>
-          <span>เลือกผู้เชี่ยวชาญ</span>
+        <div class="flex flex-col items-center gap-2 text-ink/40">
+          <div class="w-10 h-10 rounded-full bg-white border-2 border-reseda/20 flex items-center justify-center">2</div>
+          <span data-i18n="bookStep2">ชำระเงิน</span>
         </div>
-        <div class="w-8 sm:w-16 h-px bg-reseda/20 mx-2 sm:mx-4"></div>
-        <div class="flex items-center text-[#536442]">
-          <div class="w-6 h-6 rounded-full bg-[#536442] text-white flex items-center justify-center mr-2 text-xs">3</div>
-          <span>เลือกวันและเวลา</span>
-        </div>
-        <div class="w-8 sm:w-16 h-px bg-reseda/20 mx-2 sm:mx-4"></div>
-        <div class="flex items-center text-ink/40">
-          <div class="w-6 h-6 rounded-full border border-ink/30 text-ink/40 flex items-center justify-center mr-2 text-xs">4</div>
-          <span>ยืนยันการจอง</span>
+        <div class="flex flex-col items-center gap-2 text-ink/40">
+          <div class="w-10 h-10 rounded-full bg-white border-2 border-reseda/20 flex items-center justify-center">3</div>
+          <span data-i18n="bookStep3">สำเร็จ</span>
         </div>
       </div>
 
@@ -39,13 +32,13 @@
         
         <!-- Left: Services -->
         <div class="bg-[#f2efe9] rounded-2xl p-6">
-          <h3 class="font-bold text-ink mb-4">เลือกบริการ</h3>
+          <h3 class="font-bold text-ink mb-4" data-i18n="selectService">เลือกบริการ</h3>
           <div class="space-y-3">
             <!-- Service 1 -->
             <label class="service-label flex items-start gap-3 p-4 bg-white rounded-xl cursor-pointer border border-[#536442] shadow-sm transition">
               <input type="radio" name="service" value="คุยกับนักจิตวิทยา" checked class="mt-1 w-4 h-4 text-[#536442] focus:ring-[#536442] border-gray-300">
               <div>
-                <div class="font-bold text-ink">คุยกับนักจิตวิทยา</div>
+                <div class="font-bold text-ink" data-i18n="servicePsychologist">คุยกับนักจิตวิทยา</div>
                 <div class="text-sm text-ink/60">(50 นาที) <span class="text-[#b09e86] font-bold">1,300 บาท</span></div>
               </div>
             </label>
@@ -53,7 +46,7 @@
             <label class="service-label flex items-start gap-3 p-4 bg-white rounded-xl cursor-pointer border border-transparent hover:border-reseda/30 transition">
               <input type="radio" name="service" value="คุยกับจิตแพทย์" class="mt-1 w-4 h-4 text-[#536442] focus:ring-[#536442] border-gray-300">
               <div>
-                <div class="font-bold text-ink">คุยกับจิตแพทย์</div>
+                <div class="font-bold text-ink" data-i18n="servicePsychiatrist">คุยกับจิตแพทย์</div>
                 <div class="text-sm text-ink/60">(50 นาที) <span class="text-[#b09e86] font-bold">1,800 บาท</span></div>
               </div>
             </label>
@@ -61,7 +54,7 @@
             <label class="service-label flex items-start gap-3 p-4 bg-white rounded-xl cursor-pointer border border-transparent hover:border-reseda/30 transition">
               <input type="radio" name="service" value="ปรึกษาออนไลน์" class="mt-1 w-4 h-4 text-[#536442] focus:ring-[#536442] border-gray-300">
               <div>
-                <div class="font-bold text-ink">ปรึกษาออนไลน์</div>
+                <div class="font-bold text-ink" data-i18n="serviceOnline">ปรึกษาออนไลน์</div>
                 <div class="text-sm text-ink/60">(45 นาที) <span class="text-[#b09e86] font-bold">1,300 บาท</span></div>
               </div>
             </label>
@@ -95,7 +88,7 @@
 
         <!-- Right: Time Slots -->
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-reseda/10">
-          <h3 class="font-bold text-ink mb-4">เลือกเวลา</h3>
+          <h3 class="font-bold text-ink mb-4" data-i18n="selectTime">เลือกเวลา</h3>
           <div class="grid grid-cols-2 gap-3">
             <button type="button" class="time-btn py-2.5 px-4 rounded-xl border border-[#b09e86] text-[#b09e86] font-bold text-sm hover:bg-[#faf8f4] transition">09:00</button>
             <button type="button" class="time-btn py-2.5 px-4 rounded-xl border border-[#b09e86] text-[#b09e86] font-bold text-sm hover:bg-[#faf8f4] transition">10:30</button>
@@ -112,8 +105,8 @@
 
       <!-- Submit Button -->
       <div class="mt-10 text-center">
-        <button type="submit" class="bg-[#536442] text-white hover:bg-[#425034] transition rounded-full px-12 py-4 text-lg font-bold shadow-md w-full sm:w-auto min-w-[250px]">
-          ยืนยันการจอง
+        <button type="submit" id="btn-submit" class="w-full bg-[#536442] text-white font-bold py-4 rounded-xl hover:bg-[#3f4b32] transition shadow-md disabled:opacity-50 disabled:cursor-not-allowed" disabled data-i18n="confirmBooking">
+          ยืนยันการจองคิว
         </button>
       </div>
 

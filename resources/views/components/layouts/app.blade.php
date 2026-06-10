@@ -16,5 +16,79 @@
   {{ $slot }}
 
   @include('partials.footer')
+
+  <style>
+    .scroll-fade {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .scroll-fade.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Shrinking Header
+      const header = document.getElementById('main-header');
+      const headerContainer = document.getElementById('header-container');
+      const logoText = header ? header.querySelector('.font-serif') : null;
+      const logoSub = header ? header.querySelector('.uppercase') : null;
+      
+      if (header && headerContainer) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 50) {
+            header.classList.add('shadow-sm');
+            headerContainer.classList.remove('min-h-20');
+            headerContainer.classList.add('min-h-14');
+            if (logoText) {
+              logoText.classList.remove('text-4xl', 'leading-8');
+              logoText.classList.add('text-3xl', 'leading-6');
+            }
+          } else {
+            header.classList.remove('shadow-sm');
+            headerContainer.classList.remove('min-h-14');
+            headerContainer.classList.add('min-h-20');
+            if (logoText) {
+              logoText.classList.remove('text-3xl', 'leading-6');
+              logoText.classList.add('text-4xl', 'leading-8');
+            }
+          }
+        });
+      }
+
+      // 2. Scroll Fade Observer
+      // Target direct children of main to stagger/fade them individually
+      const fadeElements = document.querySelectorAll('main > div, main > section, main > article, .service-mini-card, .video-card');
+      
+      fadeElements.forEach(el => {
+        // Skip elements that are absolute/fixed or already have the class
+        const style = window.getComputedStyle(el);
+        if (style.position !== 'absolute' && style.position !== 'fixed' && !el.classList.contains('scroll-fade')) {
+          el.classList.add('scroll-fade');
+        }
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            // Unobserve to run animation only once
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+      });
+
+      document.querySelectorAll('.scroll-fade').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
 </body>
 </html>
