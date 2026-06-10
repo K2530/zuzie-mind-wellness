@@ -20,7 +20,7 @@
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" id="video-grid">
         @foreach ($videos as $video)
-          <article class="video-item video-card-visible group flex-col cursor-pointer overflow-hidden rounded-[20px] border border-gray-100/50 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all hover:shadow-lg" data-video-category="{{ $video['category'] }}">
+          <a href="{{ route('video.show', $loop->index) }}" class="video-item video-card-visible group flex flex-col cursor-pointer overflow-hidden rounded-[20px] border border-gray-100/50 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all hover:shadow-lg" data-video-category="{{ $video['category'] }}">
             <div class="relative aspect-[16/10] overflow-hidden bg-reseda">
               <img src="{{ asset('assets/images/hero-woman-tea.png') }}" alt="{{ $video['title'] }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
               <div class="absolute inset-0 bg-black/5 transition-opacity duration-300 group-hover:bg-black/15"></div>
@@ -44,7 +44,7 @@
               </h3>
               <p class="mt-2 text-sm text-ink/55">{{ $video['source'] }}</p>
             </div>
-          </article>
+          </a>
         @endforeach
       </div>
 

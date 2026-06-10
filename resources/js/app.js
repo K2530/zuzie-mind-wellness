@@ -9,6 +9,8 @@ const translations = {
     navArticles: 'บทความ',
     navBooking: 'จองคิว',
     navContact: 'ติดต่อเรา',
+    navLogin: 'เข้าสู่ระบบ',
+    navRegister: 'สมัครสมาชิก',
     bookConsult: 'จองคิวปรึกษา',
     line: 'ทัก LINE',
     heroBadge: 'พื้นที่ปลอดภัยสำหรับคนที่กำลังเหนื่อย',
@@ -83,8 +85,10 @@ const translations = {
     navArticles: 'Articles',
     navBooking: 'Book',
     navContact: 'Contact',
+    navLogin: 'Login',
+    navRegister: 'Register',
     bookConsult: 'Book a Session',
-    line: 'LINE',
+    line: 'Chat on LINE',
     heroBadge: 'A safe space for tired hearts',
     heroTitle: 'You do not have to be strong all the time… Zuzie is here with you',
     heroScript: 'we understand you',
@@ -177,12 +181,23 @@ function setLanguage(lang) {
     if (dict[key]) node.setAttribute('placeholder', dict[key]);
   });
 
-  langButtons.forEach((button) => {
+  const langSelectBtns = document.querySelectorAll('.lang-select-btn');
+  langSelectBtns.forEach((button) => {
     const active = button.dataset.lang === lang;
     button.setAttribute('aria-pressed', active ? 'true' : 'false');
-    button.classList.toggle('bg-reseda', active);
-    button.classList.toggle('text-white', active);
+    if (active) {
+      button.classList.add('border-reseda', 'font-medium', 'text-ink');
+      button.classList.remove('border-transparent', 'text-ink/70');
+    } else {
+      button.classList.add('border-transparent', 'text-ink/70');
+      button.classList.remove('border-reseda', 'font-medium', 'text-ink');
+    }
   });
+
+  const mobileCurrent = document.getElementById('lang-current-mobile');
+  if (mobileCurrent) {
+    mobileCurrent.textContent = lang === 'th' ? 'ภาษา: ไทย (TH)' : 'Language: English (EN)';
+  }
 }
 
 menuButton?.addEventListener('click', () => {
@@ -197,8 +212,74 @@ document.querySelectorAll('[data-mobile-menu] a').forEach((link) => {
   });
 });
 
-langButtons.forEach((button) => {
-  button.addEventListener('click', () => setLanguage(button.dataset.lang));
+const langBtn = document.getElementById('lang-btn');
+const langBtnMobile = document.getElementById('lang-btn-mobile');
+const langModal = document.getElementById('lang-modal');
+const langModalContent = document.getElementById('lang-modal-content');
+const langModalClose = document.getElementById('lang-modal-close');
+const langModalBackdrop = document.getElementById('lang-modal-backdrop');
+const langSelectBtns = document.querySelectorAll('.lang-select-btn');
+
+const userMenuBtn = document.getElementById('user-menu-btn');
+const userMenu = document.getElementById('user-menu');
+
+if (userMenuBtn && userMenu) {
+  userMenuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isHidden = userMenu.classList.toggle('hidden');
+    userMenuBtn.setAttribute('aria-expanded', String(!isHidden));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!userMenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
+      userMenu.classList.add('hidden');
+      userMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+function openLangModal() {
+  if (!langModal) return;
+  
+  if (userMenu && !userMenu.classList.contains('hidden')) {
+    userMenu.classList.add('hidden');
+    userMenuBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  langModal.classList.remove('hidden');
+  void langModal.offsetWidth;
+  langModal.classList.remove('opacity-0');
+  if (langModalContent) {
+    langModalContent.classList.remove('scale-95');
+    langModalContent.classList.add('scale-100');
+  }
+}
+
+function closeLangModal() {
+  if (!langModal) return;
+  langModal.classList.add('opacity-0');
+  if (langModalContent) {
+    langModalContent.classList.remove('scale-100');
+    langModalContent.classList.add('scale-95');
+  }
+  setTimeout(() => {
+    langModal.classList.add('hidden');
+  }, 300);
+}
+
+// Make openLangModal available globally if called from onclick attribute
+window.openLangModal = openLangModal;
+
+if (langBtn) langBtn.addEventListener('click', openLangModal);
+if (langBtnMobile) langBtnMobile.addEventListener('click', openLangModal);
+if (langModalClose) langModalClose.addEventListener('click', closeLangModal);
+if (langModalBackdrop) langModalBackdrop.addEventListener('click', closeLangModal);
+
+langSelectBtns.forEach((button) => {
+  button.addEventListener('click', () => {
+    setLanguage(button.dataset.lang);
+    closeLangModal();
+  });
 });
 
 document.querySelectorAll('[data-icon]').forEach((node) => {

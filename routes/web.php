@@ -35,6 +35,18 @@ Route::get('/videos', function () use ($securityHeaders) {
         ->withHeaders($securityHeaders);
 })->name('videos');
 
+Route::get('/videos/{id}', function ($id) use ($securityHeaders) {
+    $videos = config('zuzie.videos');
+    $video = $videos[$id] ?? abort(404);
+    return response()
+        ->view('pages.video-show', [
+            'navItems' => config('zuzie.nav_items'),
+            'video' => $video,
+            'relatedVideos' => array_slice($videos, 0, 4)
+        ])
+        ->withHeaders($securityHeaders);
+})->name('video.show');
+
 Route::get('/assessment', function () use ($securityHeaders) {
     return response()
         ->view('pages.assessment', [
@@ -121,3 +133,165 @@ Route::post('/assessment/{assessment}', function (string $assessment) use ($secu
         ])
         ->withHeaders($securityHeaders);
 })->name('assessment.submit');
+
+Route::get('/hashtags', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.hashtags', [
+            'navItems' => config('zuzie.nav_items'),
+            'categories' => config('zuzie.hashtag_categories'),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('hashtags');
+
+Route::get('/courses', function () use ($securityHeaders) {
+    return response()->view('pages.courses', [
+        'navItems' => config('zuzie.nav_items'),
+        'courses' => config('zuzie.courses'),
+    ])->withHeaders($securityHeaders);
+})->name('courses');
+
+Route::get('/courses/{id}', function ($id) use ($securityHeaders) {
+    return response()->view('pages.course-detail', [
+        'navItems' => config('zuzie.nav_items'),
+        'course' => config('zuzie.courses')[0]
+    ])->withHeaders($securityHeaders);
+})->name('course.detail');
+
+Route::get('/login', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.login', [
+            'navItems' => config('zuzie.nav_items'),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('login');
+
+Route::post('/login', function () {
+    session(['logged_in' => true, 'user' => [
+        'name' => 'katanyu',
+        'email' => 'ss0952728788ss@gmail.com',
+        'initial' => 'K'
+    ]]);
+    return redirect()->route('home');
+})->name('login.submit');
+
+Route::get('/logout', function () {
+    session()->forget(['logged_in', 'user']);
+    return redirect()->route('home');
+})->name('logout');
+
+Route::get('/register', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.register', [
+            'navItems' => config('zuzie.nav_items'),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('register');
+
+Route::post('/register', function () {
+    return redirect()->route('home');
+})->name('register.submit');
+
+Route::post('/cart/add', function () {
+    $course = config('zuzie.courses')[0];
+    session(['cart' => [$course]]);
+    return redirect()->route('cart');
+})->name('cart.add');
+
+Route::get('/cart/remove', function () {
+    session()->forget('cart');
+    return redirect()->route('cart');
+})->name('cart.remove');
+
+Route::get('/cart', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.cart', [
+            'navItems' => config('zuzie.nav_items'),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('cart');
+
+Route::get('/checkout', function () use ($securityHeaders) {
+    if (!session('cart')) return redirect()->route('home');
+    return response()
+        ->view('pages.checkout', [
+            'navItems' => config('zuzie.nav_items'),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('checkout');
+
+Route::post('/checkout', function () {
+    $cart = session('cart', []);
+    $myCourses = session('my_courses', []);
+    $myCourses = array_merge($myCourses, $cart);
+    session(['my_courses' => $myCourses]);
+    session()->forget('cart');
+    return redirect()->route('checkout.success');
+})->name('checkout.submit');
+
+Route::get('/checkout/success', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.checkout-success', [
+            'navItems' => config('zuzie.nav_items'),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('checkout.success');
+
+Route::get('/my-courses', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.my-courses', [
+            'navItems' => config('zuzie.nav_items'),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('my.courses');
+
+Route::get('/learn/{id}', function ($id) use ($securityHeaders) {
+    return response()
+        ->view('pages.learn', [
+            'navItems' => config('zuzie.nav_items'),
+            'course' => config('zuzie.courses')[0]
+        ])
+        ->withHeaders($securityHeaders);
+})->name('learn');
+
+Route::get('/booking', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.booking', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('booking');
+
+Route::post('/booking', function (\Illuminate\Http\Request $request) {
+    session([
+        'booking' => [
+            'service' => $request->input('service'),
+            'date' => $request->input('date'),
+            'time' => $request->input('time'),
+        ]
+    ]);
+    return redirect()->route('booking.success');
+})->name('booking.submit');
+
+Route::get('/booking/success', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.booking-success', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('booking.success');
+
+Route::get('/blogs', function () use ($securityHeaders) {
+    return response()
+        ->view('pages.blogs', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('blogs');
+
+Route::get('/blogs/{id}', function ($id) use ($securityHeaders) {
+    return response()
+        ->view('pages.article', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('article');

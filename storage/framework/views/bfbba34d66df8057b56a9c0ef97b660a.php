@@ -21,8 +21,8 @@
           <p class="mt-2 font-serif text-4xl font-light italic text-persian sm:text-5xl" data-i18n="heroScript"></p>
           <p class="mt-7 max-w-lg text-base leading-8 text-ink sm:text-lg" data-i18n="heroCopy"></p>
           <div class="mt-8 grid gap-3 sm:grid-cols-3">
-            <a href="#assessment" class="btn-primary" data-i18n="startAssessment"></a>
-            <a href="#booking" class="btn-consult" data-i18n="talkPsych"></a>
+            <a href="<?php echo e(route('assessment')); ?>" class="btn-primary" data-i18n="startAssessment"></a>
+            <a href="<?php echo e(route('booking')); ?>" class="btn-consult" data-i18n="talkPsych"></a>
             <a href="<?php echo e(route('videos')); ?>" class="btn-secondary" data-i18n="heroVideoCta"></a>
           </div>
         </div>
@@ -44,7 +44,7 @@
       <div>
         <h2 class="text-3xl font-bold leading-tight sm:text-4xl" data-i18n="assessTitle"></h2>
         <p class="mt-5 text-base leading-7 text-ink/72" data-i18n="assessCopy"></p>
-        <a href="#assessment" class="btn-primary mt-7" data-i18n="viewAllAssessments"></a>
+        <a href="<?php echo e(route('assessment')); ?>" class="btn-primary mt-7" data-i18n="viewAllAssessments"></a>
       </div>
 
       <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -55,7 +55,16 @@
               <p class="text-sm text-ink/65" data-i18n="assessmentLabel"></p>
               <h3 class="mt-1 text-xl font-bold" data-i18n="<?php echo e($card['key']); ?>"></h3>
               <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70" data-i18n="<?php echo e($card['desc']); ?>"></p>
-              <a href="#booking" class="btn-secondary mt-4 w-full" data-i18n="startNow"></a>
+              <?php
+                $slugMap = [
+                  'stress' => 'stress',
+                  'depression' => 'depression',
+                  'anxiety' => 'overthinking',
+                  'relationship' => 'toxic-relationship',
+                ];
+                $slug = $slugMap[$card['key']] ?? $card['key'];
+              ?>
+              <a href="<?php echo e(route('assessment.show', $slug)); ?>" class="btn-secondary mt-4 w-full" data-i18n="startNow"></a>
             </div>
           </article>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -92,7 +101,7 @@
         <p class="mt-3 max-w-2xl text-base leading-7 text-ink/72" data-i18n="hashtagCopy"></p>
         <div class="mt-8 flex flex-wrap gap-3">
           <?php $__currentLoopData = $hashtags; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <a href="#articles" class="pill"><?php echo e($tag); ?></a>
+            <a href="<?php echo e(route('blogs')); ?>" class="pill"><?php echo e($tag); ?></a>
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           <a href="#hashtags" class="pill bg-desert/30" data-i18n="allHashtags"></a>
         </div>
@@ -104,14 +113,14 @@
         <div>
           <h2 class="text-xl font-semibold" data-i18n="serviceTitle"></h2>
           <p class="mt-3 text-sm leading-6 text-ink/70" data-i18n="serviceCopy"></p>
-          <a href="#booking" class="btn-secondary service-card-cta mt-5" data-i18n="seeAllServices"></a>
+          <a href="<?php echo e(route('booking')); ?>" class="btn-secondary service-card-cta mt-5" data-i18n="seeAllServices"></a>
         </div>
       </article>
       <article id="courses" class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.png')] after:bg-[74%_50%]">
         <div>
           <h2 class="text-xl font-semibold" data-i18n="courseTitle"></h2>
           <p class="mt-3 text-sm leading-6 text-ink/70" data-i18n="courseCopy"></p>
-          <a href="#courses" class="btn-secondary service-card-cta mt-5" data-i18n="seeCourses"></a>
+          <a href="/courses" class="btn-secondary service-card-cta mt-5" data-i18n="seeCourses"></a>
         </div>
       </article>
       <article id="booking" class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.png')] after:bg-[82%_48%]">

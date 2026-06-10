@@ -30,7 +30,7 @@
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" id="video-grid">
         <?php $__currentLoopData = $videos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $video): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <article class="video-item video-card-visible group flex-col cursor-pointer overflow-hidden rounded-[20px] border border-gray-100/50 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all hover:shadow-lg" data-video-category="<?php echo e($video['category']); ?>">
+          <a href="<?php echo e(route('video.show', $loop->index)); ?>" class="video-item video-card-visible group flex flex-col cursor-pointer overflow-hidden rounded-[20px] border border-gray-100/50 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all hover:shadow-lg" data-video-category="<?php echo e($video['category']); ?>">
             <div class="relative aspect-[16/10] overflow-hidden bg-reseda">
               <img src="<?php echo e(asset('assets/images/hero-woman-tea.png')); ?>" alt="<?php echo e($video['title']); ?>" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
               <div class="absolute inset-0 bg-black/5 transition-opacity duration-300 group-hover:bg-black/15"></div>
@@ -56,7 +56,7 @@
               </h3>
               <p class="mt-2 text-sm text-ink/55"><?php echo e($video['source']); ?></p>
             </div>
-          </article>
+          </a>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
       </div>
 
