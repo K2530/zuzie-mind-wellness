@@ -14,7 +14,7 @@
 
       <!-- Hero Image -->
       <div class="w-full aspect-[21/9] rounded-2xl overflow-hidden mb-12">
-        <img src="{{ asset('assets/images/hero-woman-tea.png') }}" alt="10 สัญญาณความสัมพันธ์ Toxic" class="w-full h-full object-cover">
+        <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="10 สัญญาณความสัมพันธ์ Toxic" class="w-full h-full object-cover">
       </div>
 
       <!-- Content Layout -->

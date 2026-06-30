@@ -15,7 +15,7 @@
         </div>
         
         <!-- Video Mock Thumbnail -->
-        <img src="{{ asset('assets/images/hero-woman-tea.png') }}" class="w-full h-full object-cover opacity-60">
+        <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" class="w-full h-full object-cover opacity-60">
 
         <!-- Custom Controls Overlay (Bottom) -->
         <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -100,7 +100,7 @@
               <h3 class="text-xl font-bold text-ink mb-6" data-i18n="instructor">Instructor</h3>
               <div class="flex items-center gap-4 mt-4">
                 <div class="w-14 h-14 rounded-full bg-gray-200 overflow-hidden">
-                  <img src="{{ asset('assets/images/hero-woman-tea.png') }}" class="w-full h-full object-cover">
+                  <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" class="w-full h-full object-cover">
                 </div>
                 <div>
                   <div class="font-bold text-ink">Zuzie Mind Wellness</div>

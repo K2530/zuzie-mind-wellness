@@ -6,7 +6,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
           <!-- Left: Image -->
           <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-sm group cursor-pointer">
-            <img src="{{ asset('assets/images/hero-woman-tea.png') }}" alt="{{ $course['title'] ?? 'Course Image' }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="{{ $course['title'] ?? 'Course Image' }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <!-- Play Button Overlay -->
             <div class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/20 transition-colors">
               <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/90 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm group-hover:scale-110 transition-transform">

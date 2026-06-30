@@ -2,7 +2,7 @@
   <main id="home">
     <section class="relative overflow-hidden bg-almond">
       <div class="absolute inset-0">
-        <img src="{{ asset('assets/images/hero-woman-tea.png') }}" alt="Woman holding tea in a warm wellness room" class="h-full w-full object-cover object-[68%_50%]">
+        <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="Woman holding tea in a warm wellness room" class="h-full w-full object-cover object-[68%_50%]">
       </div>
 
       <div class="container-soft relative grid min-h-[760px] items-center pb-36 pt-16 sm:min-h-[800px] lg:min-h-[780px]">
@@ -41,17 +41,17 @@
       <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         @foreach ($assessments as $card)
           <article class="soft-card overflow-hidden">
-            <img src="{{ asset('assets/images/hero-woman-tea.png') }}" alt="" class="h-36 w-full object-cover {{ $card['pos'] }}">
+            <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover {{ $card['pos'] }}">
             <div class="p-5">
               <p class="text-sm text-ink/65" data-i18n="assessmentLabel"></p>
               <h3 class="mt-1 text-xl font-bold" data-i18n="{{ $card['key'] }}"></h3>
               <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70" data-i18n="{{ $card['desc'] }}"></p>
               @php
                 $slugMap = [
-                  'stress' => 'stress',
-                  'depression' => 'depression',
-                  'anxiety' => 'overthinking',
-                  'relationship' => 'toxic-relationship',
+                  'stress' => 'spst-20',
+                  'depression' => 'depression-9q',
+                  'anxiety' => 'resilience-rq',
+                  'relationship' => 'depression-9q',
                 ];
                 $slug = $slugMap[$card['key']] ?? $card['key'];
               @endphp
@@ -73,7 +73,7 @@
           @foreach ($videos as $index => $video)
             <a href="{{ route('video.show', $index) }}" class="group block">
               <div class="relative overflow-hidden rounded-lg bg-reseda">
-                <img src="{{ asset('assets/images/hero-woman-tea.png') }}" alt="" class="h-36 w-full object-cover opacity-75 transition group-hover:scale-105 {{ $index % 2 ? 'object-[72%_48%]' : 'object-[62%_44%]' }}">
+                <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover opacity-75 transition group-hover:scale-105 {{ $index % 2 ? 'object-[72%_48%]' : 'object-[62%_44%]' }}">
                 <div class="absolute inset-0 bg-gradient-to-t from-ink/68 to-transparent"></div>
                 <span class="absolute bottom-3 right-3 rounded bg-ink/80 px-2 py-1 text-xs font-bold text-white">{{ $video['time'] }}</span>
               </div>
@@ -100,21 +100,21 @@
     </section>
 
     <section id="services" class="container-soft grid gap-5 py-14 lg:grid-cols-3">
-      <article class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.png')] after:bg-[62%_48%]">
+      <article class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.webp')] after:bg-[62%_48%]">
         <div>
           <h2 class="text-xl font-semibold" data-i18n="serviceTitle"></h2>
           <p class="mt-3 text-sm leading-6 text-ink/70" data-i18n="serviceCopy"></p>
           <a href="{{ route('booking') }}" class="btn-secondary service-card-cta mt-5" data-i18n="seeAllServices"></a>
         </div>
       </article>
-      <article id="courses" class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.png')] after:bg-[74%_50%]">
+      <article id="courses" class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.webp')] after:bg-[74%_50%]">
         <div>
           <h2 class="text-xl font-semibold" data-i18n="courseTitle"></h2>
           <p class="mt-3 text-sm leading-6 text-ink/70" data-i18n="courseCopy"></p>
           <a href="/courses" class="btn-secondary service-card-cta mt-5" data-i18n="seeCourses"></a>
         </div>
       </article>
-      <article id="booking" class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.png')] after:bg-[82%_48%]">
+      <article id="booking" class="service-mini-card after:bg-[url('/assets/images/hero-woman-tea.webp')] after:bg-[82%_48%]">
         <div>
           <h2 class="text-xl font-semibold" data-i18n="communityTitle"></h2>
           <p class="mt-3 text-sm leading-6 text-ink/70" data-i18n="communityCopy"></p>

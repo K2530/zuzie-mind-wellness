@@ -49,7 +49,7 @@ Route::get('/videos/{id}', function ($id) use ($securityHeaders) {
 
 Route::get('/assessment', function () use ($securityHeaders) {
     return response()
-        ->view('pages.assessment', [
+        ->view('pages.assessment.index', [
             'navItems' => config('zuzie.nav_items'),
             'assessments' => config('zuzie.assessment_page_items'),
         ])
@@ -67,7 +67,7 @@ Route::get('/assessment/{assessment}', function (string $assessment) use ($secur
     abort_unless($assessmentItem, 404);
 
     return response()
-        ->view('pages.assessment-show', [
+        ->view('pages.assessment.show', [
             'navItems' => config('zuzie.nav_items'),
             'assessment' => $assessmentItem,
         ])
@@ -81,10 +81,14 @@ Route::post('/assessment/{assessment}', function (string $assessment) use ($secu
     abort_unless($assessmentItem, 404);
 
     $questionCount = count($assessmentItem['questions']);
+    $options = $assessmentItem['options'] ?? [0 => 'ไม่เลย', 1 => 'เล็กน้อย', 2 => 'บ่อยครั้ง', 3 => 'มากที่สุด'];
+    $optionsKeys = array_keys($options);
+    $minVal = min($optionsKeys);
+    $maxVal = max($optionsKeys);
     $rules = [];
 
     for ($index = 0; $index < $questionCount; $index++) {
-        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+        $rules["answers.$index"] = ['required', 'integer', "between:$minVal,$maxVal"];
     }
 
     $validated = request()->validate($rules, [
@@ -93,35 +97,38 @@ Route::post('/assessment/{assessment}', function (string $assessment) use ($secu
     ]);
 
     $answers = array_map('intval', $validated['answers']);
-    $score = array_sum($answers);
-    $maxScore = $questionCount * 3;
+    
+    $score = 0;
+    $reverseScoring = $assessmentItem['reverse_scoring'] ?? [];
+    foreach ($answers as $index => $val) {
+        if (in_array($index, $reverseScoring)) {
+            $score += ($minVal + $maxVal - $val);
+        } else {
+            $score += $val;
+        }
+    }
+    $maxScore = $questionCount * $maxVal;
     $percent = (int) round(($score / $maxScore) * 100);
 
-    $band = match (true) {
-        $percent >= 75 => [
-            'label' => 'สูง',
-            'tone' => '#c85f36',
-            'summary' => 'คะแนนของคุณอยู่ในระดับสูง ควรให้ความสำคัญกับการดูแลใจอย่างจริงจัง และอาจเหมาะกับการพูดคุยกับผู้เชี่ยวชาญเพื่อหาทางดูแลที่เหมาะกับคุณ',
-        ],
-        $percent >= 50 => [
-            'label' => 'ค่อนข้างสูง',
-            'tone' => '#b3794f',
-            'summary' => 'คะแนนของคุณอยู่ในระดับค่อนข้างสูง มีสัญญาณที่ควรสังเกตและเริ่มดูแลตัวเองมากขึ้น หากอาการต่อเนื่องควรขอคำแนะนำจากผู้เชี่ยวชาญ',
-        ],
-        $percent >= 25 => [
-            'label' => 'ปานกลาง',
-            'tone' => '#6b705c',
-            'summary' => 'คะแนนของคุณอยู่ในระดับปานกลาง ยังมีพื้นที่ให้ดูแลและปรับสมดุลชีวิต ลองเริ่มจากการพักผ่อน การตั้งขอบเขต และสังเกตอารมณ์ของตัวเอง',
-        ],
-        default => [
-            'label' => 'ต่ำ',
-            'tone' => '#5f8b61',
-            'summary' => 'คะแนนของคุณอยู่ในระดับต่ำในตอนนี้ แนะนำให้รักษาวิธีดูแลใจที่ช่วยคุณอยู่ และกลับมาเช็กอินตัวเองเป็นระยะ',
-        ],
-    };
+    $band = null;
+    if (isset($assessmentItem['bands'])) {
+        foreach ($assessmentItem['bands'] as $threshold => $b) {
+            if ($score >= $threshold) {
+                $band = $b;
+                break;
+            }
+        }
+    } else {
+        $band = match (true) {
+            $percent >= 75 => ['label' => 'สูง', 'tone' => '#c85f36', 'summary' => 'คะแนนของคุณอยู่ในระดับสูง ควรดูแลอย่างจริงจัง'],
+            $percent >= 50 => ['label' => 'ค่อนข้างสูง', 'tone' => '#b3794f', 'summary' => 'คะแนนของคุณอยู่ในระดับค่อนข้างสูง ควรเริ่มดูแลตัวเอง'],
+            $percent >= 25 => ['label' => 'ปานกลาง', 'tone' => '#6b705c', 'summary' => 'คะแนนของคุณอยู่ในระดับปานกลาง ลองเริ่มจากการพักผ่อน'],
+            default => ['label' => 'ต่ำ', 'tone' => '#5f8b61', 'summary' => 'คะแนนของคุณอยู่ในระดับต่ำ แนะนำให้รักษาวิธีดูแลใจต่อไป'],
+        };
+    }
 
     return response()
-        ->view('pages.assessment-result', [
+        ->view('pages.assessment.result', [
             'navItems' => config('zuzie.nav_items'),
             'assessment' => $assessmentItem,
             'answers' => $answers,
@@ -269,8 +276,21 @@ Route::post('/booking', function (\Illuminate\Http\Request $request) {
             'time' => $request->input('time'),
         ]
     ]);
-    return redirect()->route('booking.success');
+    return redirect()->route('booking.payment');
 })->name('booking.submit');
+
+Route::get('/booking/payment', function () use ($securityHeaders) {
+    if (!session('booking')) return redirect()->route('booking');
+    return response()
+        ->view('pages.booking-payment', [
+            'navItems' => config('zuzie.nav_items')
+        ])
+        ->withHeaders($securityHeaders);
+})->name('booking.payment');
+
+Route::post('/booking/payment', function () {
+    return redirect()->route('booking.success');
+})->name('booking.payment.submit');
 
 Route::get('/booking/success', function () use ($securityHeaders) {
     return response()

@@ -88,7 +88,7 @@
             @foreach($cart as $item)
               <div class="flex items-start gap-4">
                 <div class="w-16 h-12 bg-gray-200 shrink-0">
-                  <img src="{{ asset('assets/images/hero-woman-tea.png') }}" class="w-full h-full object-cover">
+                  <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" class="w-full h-full object-cover">
                 </div>
                 <div class="flex-1">
                   <h3 class="text-sm font-bold text-ink leading-tight">{{ $item['title'] ?? 'Course Title' }}</h3>

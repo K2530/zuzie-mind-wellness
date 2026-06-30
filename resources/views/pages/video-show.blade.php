@@ -12,7 +12,7 @@
       <!-- Video Player Area -->
       <div class="bg-black rounded-2xl overflow-hidden shadow-lg aspect-video relative group mb-8">
         <!-- Mock Video Thumbnail -->
-        <img src="{{ asset('assets/images/hero-woman-tea.png') }}" class="w-full h-full object-cover opacity-80" alt="{{ $video['title'] }}">
+        <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" class="w-full h-full object-cover opacity-80" alt="{{ $video['title'] }}">
         
         <!-- Play Button Overlay -->
         <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition cursor-pointer">
@@ -59,7 +59,7 @@
           @foreach ($relatedVideos as $index => $relVideo)
             <a href="{{ route('video.show', $index) }}" class="group block">
               <div class="relative overflow-hidden rounded-xl bg-reseda mb-3">
-                <img src="{{ asset('assets/images/hero-woman-tea.png') }}" class="aspect-[16/10] w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" alt="{{ $relVideo['title'] }}">
+                <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" class="aspect-[16/10] w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" alt="{{ $relVideo['title'] }}">
                 <span class="absolute bottom-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">{{ $relVideo['time'] }}</span>
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
                   <div class="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center">

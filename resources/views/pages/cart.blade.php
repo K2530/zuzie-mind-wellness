@@ -19,7 +19,7 @@
               <div class="flex flex-col sm:flex-row gap-4 border-t border-reseda/20 py-6">
                 <!-- Image -->
                 <div class="w-full sm:w-[160px] h-[90px] shrink-0 bg-gray-200 rounded-lg overflow-hidden">
-                  <img src="{{ asset('assets/images/hero-woman-tea.png') }}" alt="" class="w-full h-full object-cover">
+                  <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="w-full h-full object-cover">
                 </div>
                 
                 <!-- Details -->

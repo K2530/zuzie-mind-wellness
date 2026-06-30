@@ -13,7 +13,7 @@
             <a href="{{ route('learn', 1) }}" class="block bg-white rounded-xl overflow-hidden shadow-sm border border-reseda/10 group cursor-pointer hover:shadow-md transition">
               <!-- Image -->
               <div class="relative aspect-video overflow-hidden bg-gray-200">
-                <img src="{{ asset('assets/images/hero-woman-tea.png') }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition"></div>
                 <!-- Play button -->
                 <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">

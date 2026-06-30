@@ -7,7 +7,7 @@
       <div class="w-full lg:w-1/2 h-full relative">
         <div class="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-r from-[#faf8f4] via-[#faf8f4]/80 to-transparent z-10 w-full lg:w-32"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-[#faf8f4] to-transparent z-10 h-32 bottom-0"></div>
-        <img src="{{ asset('assets/images/hero-woman-tea.png') }}" class="w-full h-full object-cover opacity-90 object-[70%_50%]">
+        <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" class="w-full h-full object-cover opacity-90 object-[70%_50%]">
       </div>
     </div>
 

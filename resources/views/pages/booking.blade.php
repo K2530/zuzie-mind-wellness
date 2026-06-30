@@ -13,6 +13,9 @@
 
       <!-- Progress Steps -->
       <div class="flex items-center justify-between text-sm sm:text-base font-bold relative z-10 mb-12">
+        <!-- Connecting Line -->
+        <div class="absolute top-5 left-[16%] right-[16%] h-0.5 bg-[#536442]/20 -z-10 mx-auto"></div>
+
         <div class="flex flex-col items-center gap-2 text-[#536442]">
           <div class="w-10 h-10 rounded-full bg-[#f4ebd0] border-2 border-[#536442] flex items-center justify-center">1</div>
           <span data-i18n="bookStep1">จองคิว</span>
@@ -105,7 +108,7 @@
 
       <!-- Submit Button -->
       <div class="mt-10 text-center">
-        <button type="submit" id="btn-submit" class="w-full bg-[#536442] text-white font-bold py-4 rounded-xl hover:bg-[#3f4b32] transition shadow-md disabled:opacity-50 disabled:cursor-not-allowed" disabled data-i18n="confirmBooking">
+        <button type="submit" id="btn-submit" class="w-full bg-[#536442] text-white font-bold py-4 rounded-xl hover:bg-[#3f4b32] transition shadow-md" data-i18n="confirmBooking">
           ยืนยันการจองคิว
         </button>
       </div>
