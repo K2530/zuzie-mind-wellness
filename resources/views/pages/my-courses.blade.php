@@ -1,7 +1,7 @@
 <x-layouts.app :nav-items="$navItems" title="Zuzie Mind Wellness - My Learning">
   <main class="bg-[#faf8f4] min-h-screen pb-20 pt-10">
     <div class="container-soft max-w-6xl">
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mb-8" data-i18n="myLearning">คอร์สเรียนของฉัน</h1>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mb-8" data-i18n="myLearning"></h1>
       
       @php
         $myCourses = session('my_courses', []);
@@ -25,7 +25,7 @@
               
               <!-- Content -->
               <div class="p-4">
-                <h3 class="font-bold text-ink text-[15px] leading-snug mb-1 line-clamp-2">{{ $item['title'] ?? 'หลุดจากความสัมพันธ์ที่ทำร้ายใจ' }}</h3>
+                <h3 class="font-bold text-ink text-[15px] leading-snug mb-1 line-clamp-2">{{ $item['title'] ?? '' }}@if(empty($item['title']))<span data-i18n="toxicRelFallback"></span>@endif</h3>
                 <p class="text-xs text-ink/60 mb-3">Zuzie Mind Wellness</p>
                 
                 <!-- Progress -->
@@ -45,9 +45,9 @@
           <div class="w-20 h-20 bg-[#faf8f4] text-[#b09e86] rounded-full flex items-center justify-center mx-auto mb-6">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
           </div>
-          <h2 class="text-2xl font-bold text-ink mb-3">คุณยังไม่มีคอร์สเรียน</h2>
-          <p class="text-ink/70 mb-8">เริ่มต้นการเรียนรู้และพัฒนาจิตใจไปกับคอร์สของเราได้เลยครับ</p>
-          <a href="{{ route('home') }}#courses" class="bg-[#536442] hover:bg-[#425034] transition text-white font-bold px-8 py-3.5 rounded-full shadow-sm inline-block">ดูคอร์สเรียนทั้งหมด</a>
+          <h2 class="text-2xl font-bold text-ink mb-3" data-i18n="noCourses"></h2>
+          <p class="text-ink/70 mb-8" data-i18n="startLearningDesc"></p>
+          <a href="{{ route('home') }}#courses" class="bg-[#536442] hover:bg-[#425034] transition text-white font-bold px-8 py-3.5 rounded-full shadow-sm inline-block" data-i18n="viewAllCourses"></a>
         </div>
       @endif
 

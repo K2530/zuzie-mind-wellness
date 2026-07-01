@@ -2,23 +2,32 @@
   $degrees = max(8, min(360, (int) round($percent * 3.6)));
 @endphp
 
-<x-layouts.app :nav-items="$navItems" title="Zuzie Mind Wellness - ผล{{ $assessment['title'] }}">
+<x-layouts.app :nav-items="$navItems" title="Zuzie Mind Wellness - {{ $assessment['title'] }}">
   <main class="bg-milk">
     <section class="bg-gradient-to-b from-white to-almond/35 py-10 sm:py-12">
       <div class="container-soft">
         <div class="grid gap-6 lg:grid-cols-[1fr_420px]">
           <section class="rounded-lg border border-reseda/10 bg-white/92 p-7 shadow-[0_18px_45px_rgba(83,76,65,0.08)] sm:p-9">
-            <p class="text-sm font-semibold text-persian">{{ $assessment['title'] }}</p>
-            <h1 class="mt-2 text-3xl font-extrabold text-ink">ผลการประเมินของคุณ</h1>
+            <p class="text-sm font-semibold text-persian">
+              <span class="lang-th">{{ $assessment['title'] }}</span>
+              <span class="lang-en hidden">{{ $assessment['title_en'] ?? $assessment['title'] }}</span>
+            </p>
+            <h1 class="mt-2 text-3xl font-extrabold text-ink" data-i18n="yourResult">ผลการประเมินของคุณ</h1>
 
             <div class="mt-8 grid justify-items-center">
               <div class="relative grid h-64 w-64 place-items-center rounded-full" style="background: conic-gradient({{ $band['tone'] }} 0deg {{ $degrees }}deg, #efe3d7 {{ $degrees }}deg 360deg);">
                 <div class="grid h-48 w-48 place-items-center rounded-full bg-white text-center shadow-inner">
                   <div>
-                    <p class="text-xs font-semibold text-ink/55">{{ $assessment['metric'] }}</p>
+                    <p class="text-xs font-semibold text-ink/55">
+                      <span class="lang-th">{{ $assessment['metric'] }}</span>
+                      <span class="lang-en hidden">{{ $assessment['metric_en'] ?? $assessment['metric'] }}</span>
+                    </p>
                     <p class="mt-1 text-6xl font-light leading-none text-ink">{{ $percent }}<span class="text-2xl">%</span></p>
-                    <p class="mt-2 text-sm font-bold text-persian">ระดับ{{ $band['label'] }}</p>
-                    <p class="mt-1 text-xs text-ink/55">{{ $score }} / {{ $maxScore }} คะแนน</p>
+                    <p class="mt-2 text-sm font-bold text-persian">
+                      <span data-i18n="level">ระดับ</span><span class="lang-th">{{ $band['label'] }}</span>
+                      <span class="lang-en hidden">{{ $band['label_en'] ?? $band['label'] }}</span>
+                    </p>
+                    <p class="mt-1 text-xs text-ink/55">{{ $score }} / {{ $maxScore }} <span data-i18n="points">คะแนน</span></p>
                   </div>
                 </div>
               </div>
@@ -26,14 +35,17 @@
           </section>
 
           <aside class="rounded-lg border border-reseda/10 bg-white/92 p-7 shadow-[0_18px_45px_rgba(83,76,65,0.08)] sm:p-9">
-            <h2 class="text-xl font-bold text-ink">คำอธิบายผลประเมิน</h2>
-            <p class="mt-5 text-sm leading-7 text-ink/70">{{ $band['summary'] }}</p>
+            <h2 class="text-xl font-bold text-ink" data-i18n="resultDesc">คำอธิบายผลประเมิน</h2>
+            <p class="mt-5 text-sm leading-7 text-ink/70">
+              <span class="lang-th">{{ $band['summary'] }}</span>
+              <span class="lang-en hidden">{{ $band['summary_en'] ?? $band['summary'] }}</span>
+            </p>
             <div class="mt-6 rounded-lg border border-reseda/10 bg-milk p-4">
-              <h3 class="text-sm font-bold text-ink">คำแนะนำเบื้องต้น</h3>
-              <ul class="mt-3 grid gap-2 text-sm leading-6 text-ink/70">
-                <li>สังเกตอารมณ์ ร่างกาย และสิ่งกระตุ้นที่ทำให้อาการเพิ่มขึ้น</li>
-                <li>ให้เวลากับการพัก การนอน และการลดสิ่งที่กดดันเกินจำเป็น</li>
-                <li>พูดคุยกับคนที่ไว้ใจ หรือจองคิวผู้เชี่ยวชาญหากอาการรบกวนชีวิตประจำวัน</li>
+              <h3 class="text-sm font-bold text-ink" data-i18n="initialAdvice">คำแนะนำเบื้องต้น</h3>
+              <ul class="mt-3 grid gap-2 text-sm leading-6 text-ink/70 list-disc pl-4">
+                <li data-i18n="advice1">สังเกตอารมณ์ ร่างกาย และสิ่งกระตุ้นที่ทำให้อาการเพิ่มขึ้น</li>
+                <li data-i18n="advice2">ให้เวลากับการพัก การนอน และการลดสิ่งที่กดดันเกินจำเป็น</li>
+                <li data-i18n="advice3">พูดคุยกับคนที่ไว้ใจ หรือจองคิวผู้เชี่ยวชาญหากอาการรบกวนชีวิตประจำวัน</li>
               </ul>
             </div>
           </aside>
@@ -42,17 +54,29 @@
         <section class="mt-8 rounded-lg border border-reseda/10 bg-white/88 p-5 shadow-[0_14px_38px_rgba(83,76,65,0.06)] sm:p-7">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 class="text-xl font-bold text-ink">รายละเอียดคะแนน</h2>
-              <p class="mt-1 text-sm text-ink/60">คะแนนแต่ละข้อจากคำตอบของคุณ</p>
+              <h2 class="text-xl font-bold text-ink" data-i18n="scoreDetails">รายละเอียดคะแนน</h2>
+              <p class="mt-1 text-sm text-ink/60" data-i18n="scoreDetailsDesc">คะแนนแต่ละข้อจากคำตอบของคุณ</p>
             </div>
-            <a href="{{ route('assessment.show', $assessment['slug']) }}" class="btn-secondary min-h-10 px-4 py-2 text-xs">ทำแบบประเมินอีกครั้ง</a>
+            <a href="{{ route('assessment.show', $assessment['slug']) }}" class="btn-secondary min-h-10 px-4 py-2 text-xs" data-i18n="retakeAssessment">ทำแบบประเมินอีกครั้ง</a>
           </div>
 
           <div class="mt-5 grid gap-3">
             @foreach ($assessment['questions'] as $index => $question)
+              @php
+                  $isCustomOptions = is_array($question) && isset($question['options']);
+                  $qText = $isCustomOptions ? $question['text'] : $question;
+                  $qTextEn = $isCustomOptions ? ($question['text_en'] ?? $qText) : ($question['text_en'] ?? $qText);
+                  
+                  // Need to deduce max points for this specific question
+                  $options = $isCustomOptions ? $question['options'] : ($assessment['options'] ?? [0,1,2,3]);
+                  $qMaxScore = max(array_keys($options));
+              @endphp
               <div class="grid gap-3 rounded-md border border-reseda/10 bg-milk/70 p-4 sm:grid-cols-[1fr_92px] sm:items-center">
-                <p class="text-sm font-semibold leading-6 text-ink">{{ $index + 1 }}. {{ $question }}</p>
-                <div class="rounded-full bg-white px-4 py-2 text-center text-sm font-bold text-reseda">{{ $answers[$index] }} / 3</div>
+                <p class="text-sm font-semibold leading-6 text-ink">
+                  <span class="lang-th">{{ $index + 1 }}. {{ $qText }}</span>
+                  <span class="lang-en hidden">{{ $index + 1 }}. {{ $qTextEn }}</span>
+                </p>
+                <div class="rounded-full bg-white px-4 py-2 text-center text-sm font-bold text-reseda">{{ $answers[$index] }} / {{ $qMaxScore }}</div>
               </div>
             @endforeach
           </div>

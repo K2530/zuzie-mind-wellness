@@ -4,8 +4,8 @@
       
       <!-- Header -->
       <div class="text-center mb-10">
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mb-2">ชำระเงิน</h1>
-        <p class="text-ink/70">กรุณาตรวจสอบข้อมูลและชำระเงินเพื่อยืนยันการจอง</p>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mb-2" data-i18n="paymentTitle">ชำระเงิน</h1>
+        <p class="text-ink/70" data-i18n="paymentSubtitle">กรุณาตรวจสอบข้อมูลและชำระเงินเพื่อยืนยันการจอง</p>
       </div>
 
       <!-- Progress Steps -->
@@ -35,28 +35,28 @@
         @csrf
         <div class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-reseda/10">
           
-          <h3 class="text-xl font-bold text-ink mb-4 border-b border-reseda/10 pb-4">สรุปรายการจอง</h3>
+          <h3 class="text-xl font-bold text-ink mb-4 border-b border-reseda/10 pb-4" data-i18n="bookingSummary">สรุปรายการจอง</h3>
           
           <div class="flex justify-between items-start mb-2">
             <div>
-              <p class="font-bold text-ink text-lg">{{ session('booking.service') ?? 'คุยกับนักจิตวิทยา' }}</p>
-              <p class="text-ink/60">{{ session('booking.date') ?? '15 พฤษภาคม 2024' }} เวลา {{ session('booking.time') ?? '18:00' }} น.</p>
+              <p class="font-bold text-ink text-lg"><span class="lang-th">{{ session('booking.service') ?? 'คุยกับนักจิตวิทยา' }}</span><span class="lang-en hidden">{{ session('booking.service_en') ?? (session('booking.service') ?? 'Talk with Psychologist') }}</span></p>
+              <p class="text-ink/60">{{ session('booking.date') ?? '15 พฤษภาคม 2024' }} <span data-i18n="timeLabel">เวลา</span> {{ session('booking.time') ?? '18:00' }} <span data-i18n="timeUnit">น.</span></p>
             </div>
             <div class="text-right">
-              <p class="font-bold text-2xl text-[#b09e86]">1,300 <span class="text-sm">บาท</span></p>
+              <p class="font-bold text-2xl text-[#b09e86]">1,300 <span class="text-sm" data-i18n="baht">บาท</span></p>
             </div>
           </div>
           
           <div class="mt-8 mb-6">
-            <h3 class="font-bold text-ink mb-3">วิธีชำระเงิน</h3>
+            <h3 class="font-bold text-ink mb-3" data-i18n="paymentMethod">วิธีชำระเงิน</h3>
             <div class="flex gap-3 mb-6">
               <label class="flex-1 border-2 border-[#536442] bg-[#faf8f4] p-4 rounded-xl cursor-pointer text-center font-bold text-[#536442] transition shadow-sm">
                 <input type="radio" name="payment_method" value="promptpay" checked class="hidden">
-                QR PromptPay
+                <span data-i18n="qrPromptPay">QR PromptPay</span>
               </label>
               <label class="flex-1 border-2 border-transparent bg-gray-50 hover:bg-gray-100 p-4 rounded-xl cursor-pointer text-center font-bold text-ink/40 transition">
                 <input type="radio" name="payment_method" value="credit" disabled class="hidden">
-                บัตรเครดิต (เร็วๆ นี้)
+                <span data-i18n="creditCardSoon">บัตรเครดิต (เร็วๆ นี้)</span>
               </label>
             </div>
 
@@ -71,19 +71,19 @@
                 </div>
                 <div class="relative bg-white font-bold text-[#b09e86] px-4 py-1.5 rounded-full shadow-md text-sm z-10 border border-[#b09e86]/20">Scan to Pay</div>
               </div>
-              <p class="font-bold text-ink mb-1">บจก. ซูซี่ มายด์ เวลเนส</p>
-              <p class="text-ink/60 text-sm">ยอดชำระ: 1,300.00 บาท</p>
-              <p class="text-reseda text-xs mt-3 font-semibold px-4 py-2 bg-reseda/10 rounded-full">*นี่คือระบบจำลอง (Mock) กดปุ่มชำระเงินด้านล่างเพื่อผ่านไปยังหน้าสำเร็จได้เลยครับ*</p>
+              <p class="font-bold text-ink mb-1" data-i18n="companyName">บจก. ซูซี่ มายด์ เวลเนส</p>
+              <p class="text-ink/60 text-sm"><span data-i18n="paymentAmount">ยอดชำระ:</span> 1,300.00 <span data-i18n="baht">บาท</span></p>
+              <p class="text-reseda text-xs mt-3 font-semibold px-4 py-2 bg-reseda/10 rounded-full" data-i18n="mockPaymentNote">*นี่คือระบบจำลอง (Mock) กดปุ่มชำระเงินด้านล่างเพื่อผ่านไปยังหน้าสำเร็จได้เลยครับ*</p>
             </div>
           </div>
 
           <div class="mt-8 flex flex-col-reverse sm:flex-row gap-3">
-            <a href="{{ route('booking') }}" class="w-full sm:w-1/3 flex items-center justify-center text-center border-2 border-[#536442]/20 text-ink/70 hover:bg-gray-50 font-bold py-3.5 sm:py-4 rounded-xl transition">
+            <a href="{{ route('booking') }}" class="w-full sm:w-1/3 flex items-center justify-center text-center border-2 border-[#536442]/20 text-ink/70 hover:bg-gray-50 font-bold py-3.5 sm:py-4 rounded-xl transition" data-i18n="goBack">
               ย้อนกลับ
             </a>
             <button type="submit" class="w-full sm:w-2/3 bg-[#536442] text-white font-bold py-3.5 sm:py-4 rounded-xl hover:bg-[#3f4b32] transition shadow-md sm:text-lg flex justify-center items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              ยืนยันการชำระเงิน
+              <span data-i18n="confirmPayment">ยืนยันการชำระเงิน</span>
             </button>
           </div>
 

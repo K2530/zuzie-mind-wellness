@@ -114,13 +114,19 @@
 
   .video-card-visible {
     display: flex !important;
-    animation: fadeVideoIn 0.3s ease-in-out forwards;
-  }
-
-  .video-card-hidden {
-    display: none !important;
   }
 }
+
+/* Language Toggle Utilities */
+html[lang="en"] .lang-th { display: none !important; }
+html[lang="en"] .lang-en { display: block !important; }
+html[lang="en"] .lang-en-inline { display: inline !important; }
+html[lang="en"] .lang-en-flex { display: flex !important; }
+
+html[lang="th"] .lang-en, html[lang="th"] .lang-en-inline, html[lang="th"] .lang-en-flex { display: none !important; }
+html[lang="th"] .lang-th { display: block !important; }
+html[lang="th"] span.lang-th, html[lang="th"] a.lang-th, html[lang="th"] b.lang-th, html[lang="th"] i.lang-th { display: inline !important; }
+html[lang="th"] div.lang-th-flex, html[lang="th"] button.lang-th-flex { display: flex !important; }
 
 @keyframes fadeVideoIn {
   from {

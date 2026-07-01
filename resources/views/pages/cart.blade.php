@@ -25,7 +25,7 @@
                 <!-- Details -->
                 <div class="flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 class="text-[15px] font-bold text-ink leading-tight mb-1">{{ $item['title'] ?? 'หลุดจากความสัมพันธ์ที่ทำร้ายใจ' }}</h3>
+                    <h3 class="text-[15px] font-bold text-ink leading-tight mb-1">{{ $item['title'] ?? '' }}@if(empty($item['title']))<span data-i18n="toxicRelFallback"></span>@endif</h3>
                     <p class="text-xs text-ink/70 mb-1">By Zuzie Mind Wellness</p>
                     <div class="flex items-center gap-2 mb-1">
                       <span class="bg-[#e35641] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm">Bestseller</span>

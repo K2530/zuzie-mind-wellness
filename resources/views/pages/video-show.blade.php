@@ -2,9 +2,8 @@
   <main class="bg-[#faf8f4] min-h-screen pb-20 pt-10">
     <div class="container-soft max-w-5xl">
       
-      <!-- Breadcrumb -->
       <nav class="mb-6 flex text-sm font-medium text-ink/60">
-        <a href="{{ route('videos') }}" class="hover:text-reseda transition">วิดีโอฮีลใจ</a>
+        <a href="{{ route('videos') }}" class="hover:text-reseda transition"><span data-i18n="healVideo">วิดีโอฮีลใจ</span></a>
         <span class="mx-2">/</span>
         <span class="text-ink truncate max-w-[200px] sm:max-w-md">{{ $video['title'] }}</span>
       </nav>
@@ -31,12 +30,12 @@
             {{ $video['time'] }}
           </span>
           <span class="text-sm text-ink/60 font-medium">|</span>
-          <span class="text-sm text-ink/60 font-medium">โดย {{ $video['source'] }}</span>
+          <span class="text-sm text-ink/60 font-medium"><span data-i18n="by">โดย</span> {{ $video['source'] }}</span>
         </div>
         <h1 class="text-3xl sm:text-4xl font-extrabold text-ink mb-6 leading-tight">{{ $video['title'] }}</h1>
         <p class="text-ink/80 leading-relaxed max-w-3xl text-lg">
-          วิดีโอนี้จะช่วยให้คุณเข้าใจและหาวิธีรับมือกับความรู้สึกในแบบของคุณ พร้อมให้กำลังใจในการก้าวผ่านช่วงเวลาที่ยากลำบาก
-          เรียนรู้เทคนิคและวิธีการปรับมุมมองเพื่อสุขภาพใจที่แข็งแรงขึ้น
+          <span data-i18n="videoDesc">วิดีโอนี้จะช่วยให้คุณเข้าใจและหาวิธีรับมือกับความรู้สึกในแบบของคุณ พร้อมให้กำลังใจในการก้าวผ่านช่วงเวลาที่ยากลำบาก
+          เรียนรู้เทคนิคและวิธีการปรับมุมมองเพื่อสุขภาพใจที่แข็งแรงขึ้น</span>
         </p>
 
         <!-- Actions -->

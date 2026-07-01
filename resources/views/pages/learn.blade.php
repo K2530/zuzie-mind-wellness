@@ -51,7 +51,7 @@
 
       <!-- Course Content Tabs -->
       <div class="px-6 py-8">
-        <h1 class="text-2xl font-extrabold text-ink mb-6">{{ $course['title'] ?? 'หลุดจากความสัมพันธ์ที่ทำร้ายใจ' }}</h1>
+        <h1 class="text-2xl font-extrabold text-ink mb-6">{{ $course['title'] ?? '' }}@if(empty($course['title']))<span data-i18n="toxicRelFallback"></span>@endif</h1>
         
         <div class="border-b border-reseda/20 mb-6 flex overflow-x-auto" id="tab-buttons">
           <button class="tab-btn px-4 py-3 font-bold text-ink border-b-2 border-ink whitespace-nowrap active" data-target="tab-overview">Overview</button>
@@ -66,7 +66,7 @@
           <!-- Overview Tab -->
           <div class="tab-pane block" id="tab-overview">
             <h3 class="text-xl font-bold text-ink mb-4" data-i18n="courseContent">About this course</h3>
-            <p class="text-ink/70 mb-4 leading-relaxed">{{ $course['desc'] ?? 'เยียวยาใจและสร้างชีวิตใหม่อย่างมั่นคง เรียนรู้ความสัมพันธ์ที่เป็นพิษและวิธีตั้งขอบเขต' }}</p>
+            <p class="text-ink/70 mb-4 leading-relaxed">{{ $course['desc'] ?? '' }}@if(empty($course['desc']))<span data-i18n="toxicRelDescFallback"></span>@endif</p>
             
             <div class="flex items-center gap-6 text-sm text-ink mb-8 border-t border-b border-reseda/10 py-4">
               <div>
@@ -121,11 +121,11 @@
               <div class="border border-reseda/20 rounded-lg p-4 flex gap-4">
                 <div class="w-10 h-10 bg-almond rounded-full flex items-center justify-center font-bold text-ink shrink-0">ก</div>
                 <div class="flex-1">
-                  <h3 class="font-bold text-ink text-sm">ถ้าเราไม่แน่ใจว่าเราเป็นคน Toxic เองหรือเปล่า ต้องสังเกตยังไงคะ?</h3>
-                  <p class="text-xs text-ink/60 mt-1">กมลวรรณ • 2 วันที่แล้ว • ในบทเรียน: วงจรความสัมพันธ์เป็นพิษ</p>
+                  <h3 class="font-bold text-ink text-sm" data-i18n="qa1Title"></h3>
+                  <p class="text-xs text-ink/60 mt-1" data-i18n="qa1Meta"></p>
                   <div class="mt-3 text-sm text-ink/80 border-l-2 border-reseda/30 pl-3">
                     <p class="font-bold mb-1">Zuzie Mind Wellness (Instructor)</p>
-                    ลองสังเกตว่าเรายอมรับฟังเวลาคนอื่นบอกว่าเราทำผิดไหม หรือเรามักจะปกป้องตัวเองและโทษสถานการณ์ตลอด...
+                    <span data-i18n="qa1Answer"></span>
                   </div>
                 </div>
               </div>
@@ -133,8 +133,8 @@
               <div class="border border-reseda/20 rounded-lg p-4 flex gap-4">
                 <div class="w-10 h-10 bg-desert/50 rounded-full flex items-center justify-center font-bold text-ink shrink-0">S</div>
                 <div class="flex-1">
-                  <h3 class="font-bold text-ink text-sm">ยากมากเลยค่ะที่จะกล้าปฏิเสธ กลัวเขาจะเกลียด</h3>
-                  <p class="text-xs text-ink/60 mt-1">Som O • 1 สัปดาห์ที่แล้ว • ในบทเรียน: การปฏิเสธโดยไม่รู้สึกผิด</p>
+                  <h3 class="font-bold text-ink text-sm" data-i18n="qa2Title"></h3>
+                  <p class="text-xs text-ink/60 mt-1" data-i18n="qa2Meta"></p>
                 </div>
               </div>
             </div>
@@ -156,7 +156,7 @@
                     <button class="text-ink/50 hover:text-red-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                   </div>
                 </div>
-                <p class="text-sm text-ink/80">ขอบเขตไม่ใช่กำแพง แต่เป็นประตูที่เราเลือกว่าจะให้ใครเข้ามาตอนไหน</p>
+                <p class="text-sm text-ink/80" data-i18n="note1"></p>
               </div>
             </div>
           </div>
@@ -188,7 +188,7 @@
         <div class="accordion-item border-b border-reseda/10">
           <button class="accordion-btn w-full flex items-start justify-between p-4 bg-gray-50 hover:bg-gray-100 transition text-left">
             <div>
-              <div class="font-bold text-ink text-[15px]">Section 1: ทำความเข้าใจความสัมพันธ์</div>
+              <div class="font-bold text-ink text-[15px]" data-i18n="section1"></div>
               <div class="text-[11px] text-ink/60 mt-1">3 / 3 | 25min</div>
             </div>
             <svg class="chevron w-4 h-4 text-ink/60 mt-1 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -197,7 +197,7 @@
             <div class="lesson-item flex items-start gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" checked class="progress-check mt-1 w-4 h-4 text-[#536442] rounded-sm focus:ring-[#536442] border-ink/30 cursor-pointer">
               <div>
-                <div class="text-[13px] text-ink">1. บทนำ: สัญญาณเตือนที่ต้องรู้</div>
+                <div class="text-[13px] text-ink" data-i18n="lesson1"></div>
                 <div class="text-[11px] text-ink/50 flex items-center gap-1 mt-0.5">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
                   8min
@@ -207,7 +207,7 @@
             <div class="lesson-item flex items-start gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" checked class="progress-check mt-1 w-4 h-4 text-[#536442] rounded-sm focus:ring-[#536442] border-ink/30 cursor-pointer">
               <div>
-                <div class="text-[13px] text-ink">2. วงจรความสัมพันธ์เป็นพิษ</div>
+                <div class="text-[13px] text-ink" data-i18n="lesson2"></div>
                 <div class="text-[11px] text-ink/50 flex items-center gap-1 mt-0.5">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
                   12min
@@ -217,7 +217,7 @@
             <div class="lesson-item flex items-start gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" checked class="progress-check mt-1 w-4 h-4 text-[#536442] rounded-sm focus:ring-[#536442] border-ink/30 cursor-pointer">
               <div>
-                <div class="text-[13px] text-ink">3. แบบประเมินตนเอง (Worksheet)</div>
+                <div class="text-[13px] text-ink" data-i18n="lesson3"></div>
                 <div class="text-[11px] text-ink/50 flex items-center gap-1 mt-0.5">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                   5min
@@ -231,7 +231,7 @@
         <div class="accordion-item border-b border-reseda/10">
           <button class="accordion-btn w-full flex items-start justify-between p-4 bg-gray-50 hover:bg-gray-100 transition text-left">
             <div>
-              <div class="font-bold text-ink text-[15px]">Section 2: การปกป้องจิตใจและการตั้งขอบเขต</div>
+              <div class="font-bold text-ink text-[15px]" data-i18n="section2"></div>
               <div class="text-[11px] text-ink/60 mt-1">1 / 4 | 45min</div>
             </div>
             <svg class="chevron w-4 h-4 text-ink/60 mt-1 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -240,7 +240,7 @@
             <div class="lesson-item flex items-start gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" checked class="progress-check mt-1 w-4 h-4 text-[#536442] rounded-sm focus:ring-[#536442] border-ink/30 cursor-pointer">
               <div>
-                <div class="text-[13px] text-ink">4. ขอบเขตคืออะไร? (Boundaries)</div>
+                <div class="text-[13px] text-ink" data-i18n="lesson4"></div>
                 <div class="text-[11px] text-ink/50 flex items-center gap-1 mt-0.5">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
                   10min
@@ -251,7 +251,7 @@
             <div class="lesson-item flex items-start gap-3 px-4 py-2 bg-[#f4ebd0]/30 cursor-pointer border-l-4 border-[#b09e86]">
               <input type="checkbox" class="progress-check mt-1 w-4 h-4 text-[#536442] rounded-sm focus:ring-[#536442] border-ink/30 cursor-pointer">
               <div>
-                <div class="text-[13px] font-bold text-ink">5. วิธีสื่อสารเมื่อถูกล้ำเส้น</div>
+                <div class="text-[13px] font-bold text-ink" data-i18n="lesson5"></div>
                 <div class="text-[11px] text-ink/50 flex items-center gap-1 mt-0.5">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
                   12min
@@ -261,7 +261,7 @@
             <div class="lesson-item flex items-start gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" class="progress-check mt-1 w-4 h-4 text-[#536442] rounded-sm focus:ring-[#536442] border-ink/30 cursor-pointer">
               <div>
-                <div class="text-[13px] text-ink">6. การปฏิเสธโดยไม่รู้สึกผิด</div>
+                <div class="text-[13px] text-ink" data-i18n="lesson6"></div>
                 <div class="text-[11px] text-ink/50 flex items-center gap-1 mt-0.5">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
                   15min
@@ -275,7 +275,7 @@
         <div class="accordion-item border-b border-reseda/10">
           <button class="accordion-btn w-full flex items-start justify-between p-4 hover:bg-gray-50 transition text-left">
             <div>
-              <div class="font-bold text-ink text-[15px]">Section 3: การเยียวยาและสร้างคุณค่าให้ตัวเอง</div>
+              <div class="font-bold text-ink text-[15px]" data-i18n="section3"></div>
               <div class="text-[11px] text-ink/60 mt-1">0 / 5 | 1hr 10min</div>
             </div>
             <svg class="chevron w-4 h-4 text-ink/60 mt-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -284,7 +284,7 @@
             <div class="lesson-item flex items-start gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer">
               <input type="checkbox" class="progress-check mt-1 w-4 h-4 text-[#536442] rounded-sm focus:ring-[#536442] border-ink/30 cursor-pointer">
               <div>
-                <div class="text-[13px] text-ink">7. การรักตัวเองเริ่มจากตรงไหน</div>
+                <div class="text-[13px] text-ink" data-i18n="lesson7"></div>
                 <div class="text-[11px] text-ink/50 flex items-center gap-1 mt-0.5">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
                   20min

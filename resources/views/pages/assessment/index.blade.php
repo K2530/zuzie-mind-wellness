@@ -3,9 +3,9 @@
     <section class="border-b border-reseda/10 bg-gradient-to-b from-white to-almond/35 py-10 sm:py-12">
       <div class="container-soft">
         <div class="mx-auto max-w-3xl text-center">
-          <p class="text-sm font-semibold text-persian">แบบประเมินใจ</p>
-          <h1 class="mt-3 text-3xl font-extrabold leading-tight text-ink sm:text-4xl">แบบประเมินใจ</h1>
-          <p class="mt-3 text-sm leading-6 text-ink/68 sm:text-base">
+          <p class="text-sm font-semibold text-persian" data-i18n="assessmentPageTitleMini">แบบประเมินใจ</p>
+          <h1 class="mt-3 text-3xl font-extrabold leading-tight text-ink sm:text-4xl" data-i18n="assessmentPageTitle">แบบประเมินใจ</h1>
+          <p class="mt-3 text-sm leading-6 text-ink/68 sm:text-base" data-i18n="assessmentPageDesc">
             เริ่มจากเข้าใจตัวเอง เลือกหัวข้อที่ใกล้เคียงกับสิ่งที่คุณกำลังเผชิญอยู่
           </p>
         </div>
@@ -50,19 +50,19 @@
           <aside class="grid gap-4">
             <div class="overflow-hidden rounded-lg border border-reseda/10 bg-white shadow-[0_18px_45px_rgba(83,76,65,0.08)]">
               <div class="p-7">
-                <h2 class="text-xl font-bold text-ink">ผลการประเมินนี้</h2>
-                <p class="mt-3 text-sm font-semibold leading-6 text-persian">เป็นเพียงการคัดกรองเบื้องต้น ไม่ใช่การวินิจฉัย</p>
-                <p class="mt-5 text-sm leading-7 text-ink/70">
+                <h2 class="text-xl font-bold text-ink" data-i18n="assessmentResultTitle">ผลการประเมินนี้</h2>
+                <p class="mt-3 text-sm font-semibold leading-6 text-persian" data-i18n="assessmentResultWarning">เป็นเพียงการคัดกรองเบื้องต้น ไม่ใช่การวินิจฉัย</p>
+                <p class="mt-5 text-sm leading-7 text-ink/70" data-i18n="assessmentResultSuggest">
                   หากคุณต้องการคำแนะนำจากผู้เชี่ยวชาญ สามารถจองคิวปรึกษากับนักจิตวิทยาที่เข้าใจคุณ และรับคำแนะนำที่เหมาะสมได้
                 </p>
-                <a href="{{ route('home') }}#booking" class="btn-primary mt-6">จองคิวปรึกษา</a>
+                <a href="{{ route('home') }}#booking" class="btn-primary mt-6" data-i18n="bookConsultationBtn">จองคิวปรึกษา</a>
               </div>
               <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-28 w-full object-cover object-[72%_48%] opacity-85">
             </div>
 
             <div class="grid gap-3 rounded-lg border border-reseda/10 bg-almond/50 p-5 sm:grid-cols-[1fr_132px] sm:items-center">
-              <p class="text-sm font-semibold leading-6 text-ink">ต้องการความช่วยเหลือ? ทักแชทปรึกษาเราได้เลย</p>
-              <a href="https://line.me/R/ti/p/@zuziewellness" class="btn-line min-h-10 px-3 py-2 text-xs" rel="noopener">ทัก LINE</a>
+              <p class="text-sm font-semibold leading-6 text-ink" data-i18n="needHelpText">ต้องการความช่วยเหลือ? ทักแชทปรึกษาเราได้เลย</p>
+              <a href="https://line.me/R/ti/p/@zuziewellness" class="btn-line min-h-10 px-3 py-2 text-xs" rel="noopener" data-i18n="chatLineBtn">ทัก LINE</a>
             </div>
           </aside>
         </div>
