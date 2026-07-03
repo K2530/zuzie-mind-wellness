@@ -57,7 +57,7 @@ if [ ! -f .env ]; then cp .env.example .env && php artisan key:generate; fi\n\
 touch database/database.sqlite\n\
 php artisan migrate --force\n\
 # แก้ไข Port ของ Apache ให้ใช้ PORT จาก Render (ถ้าไม่มีให้ใช้ 80)\n\
-sed -i "s/80/${PORT:-80}/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf\n\
+sed -i "s/80/\${PORT:-80}/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf\n\
 apache2-foreground' > /usr/local/bin/start.sh && chmod +x /usr/local/bin/start.sh
 
 CMD ["/usr/local/bin/start.sh"]
