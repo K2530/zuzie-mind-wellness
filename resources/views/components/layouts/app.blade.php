@@ -88,7 +88,39 @@
       document.querySelectorAll('.scroll-fade').forEach(el => {
         observer.observe(el);
       });
+      // 3. Global Form Loader
+      const globalLoader = document.getElementById('global-loader');
+      const loaderText = document.getElementById('global-loader-text');
+      if (globalLoader) {
+        document.addEventListener('submit', function(e) {
+          const form = e.target;
+          if (!form.hasAttribute('data-no-loader') && form.target !== '_blank') {
+            globalLoader.classList.remove('hidden');
+            globalLoader.classList.add('flex');
+            setTimeout(() => {
+              globalLoader.classList.remove('opacity-0');
+            }, 10);
+            
+            if (form.action.includes('register')) {
+              loaderText.innerText = 'กำลังสร้างบัญชีของคุณ...';
+            } else if (form.action.includes('payment') || form.action.includes('checkout') || form.action.includes('booking')) {
+              loaderText.innerText = 'กำลังประมวลผล...';
+            } else {
+              loaderText.innerText = 'กำลังดำเนินการ...';
+            }
+          }
+        });
+      }
     });
   </script>
+
+  <!-- Global Form Submission Loader -->
+  <div id="global-loader" class="fixed inset-0 z-[9999] bg-milk/80 backdrop-blur-sm hidden flex-col items-center justify-center transition-opacity duration-300 opacity-0">
+    <div class="relative flex items-center justify-center">
+      <div class="absolute w-20 h-20 border-4 border-reseda/20 rounded-full"></div>
+      <div class="absolute w-20 h-20 border-4 border-reseda border-t-transparent rounded-full animate-spin"></div>
+    </div>
+    <p class="mt-6 text-reseda font-medium text-lg tracking-wide animate-pulse" id="global-loader-text">กำลังดำเนินการ...</p>
+  </div>
 </body>
 </html>
