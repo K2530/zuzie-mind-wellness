@@ -1,0 +1,7 @@
+/node_modules
+/vendor
+/public/build
+/.git
+/.env
+/database/database.sqlite
+/*.log
