@@ -34,6 +34,23 @@
                     $qText = $isCustomOptions || $isComplexText ? $question['text'] : $question;
                     $qTextEn = $isCustomOptions || $isComplexText ? ($question['text_en'] ?? $qText) : $qText;
                     
+                    if (is_string($qText) && str_starts_with(trim($qText), '{')) {
+                        $parsed = json_decode($qText, true);
+                        if (json_last_error() === JSON_ERROR_NONE && isset($parsed['options'])) {
+                            $isCustomOptions = true;
+                            $question['options'] = $parsed['options'];
+                            $qText = 'เลือกข้อที่ตรงกับความรู้สึกของคุณที่สุด';
+                        }
+                    }
+                    
+                    if (is_string($qTextEn) && str_starts_with(trim($qTextEn), '{')) {
+                        $parsedEn = json_decode($qTextEn, true);
+                        if (json_last_error() === JSON_ERROR_NONE && isset($parsedEn['options'])) {
+                            $question['options_en'] = $parsedEn['options'];
+                            $qTextEn = 'Choose the statement that best describes you';
+                        }
+                    }
+                    
                     $options = $isCustomOptions ? $question['options'] : ($assessment['options'] ?? [0 => 'ไม่เลย', 1 => 'เล็กน้อย', 2 => 'บ่อยครั้ง', 3 => 'มากที่สุด']);
                     $optionsEn = $isCustomOptions ? ($question['options_en'] ?? $options) : ($assessment['options_en'] ?? [0 => 'Not at all', 1 => 'A little', 2 => 'Often', 3 => 'Most of the time']);
                     $isGrid = !$isCustomOptions;
