@@ -117,10 +117,10 @@
   <!-- Global Form Submission Loader -->
   <div id="global-loader" class="fixed inset-0 z-[9999] bg-milk/80 backdrop-blur-sm hidden flex-col items-center justify-center transition-opacity duration-300 opacity-0">
     <div class="relative flex items-center justify-center">
-      <div class="absolute w-20 h-20 border-4 border-reseda/20 rounded-full"></div>
-      <div class="absolute w-20 h-20 border-4 border-reseda border-t-transparent rounded-full animate-spin"></div>
+      <div class="absolute w-12 h-12 border-[3px] border-reseda/20 rounded-full"></div>
+      <div class="absolute w-12 h-12 border-[3px] border-reseda border-t-transparent rounded-full animate-spin"></div>
     </div>
-    <p class="mt-6 text-reseda font-medium text-lg tracking-wide animate-pulse" id="global-loader-text">กำลังดำเนินการ...</p>
+    <p class="mt-4 text-reseda font-medium text-base tracking-wide animate-pulse" id="global-loader-text">กำลังดำเนินการ...</p>
   </div>
 </body>
 </html>
