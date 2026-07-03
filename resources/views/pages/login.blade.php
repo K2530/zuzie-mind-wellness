@@ -8,6 +8,15 @@
       </div>
       <form class="mt-8 space-y-6" action="{{ route('login.submit') }}" method="POST">
         @csrf
+
+        @if ($errors->any())
+          <div class="rounded-lg border border-[#c85f36]/25 bg-[#c85f36]/10 px-4 py-3 text-sm font-semibold text-[#8d3f24]">
+            @foreach ($errors->all() as $error)
+              <p>{{ $error }}</p>
+            @endforeach
+          </div>
+        @endif
+
         <div class="rounded-md shadow-sm space-y-4">
           <div>
             <label for="username" class="block text-sm font-medium text-ink mb-1" data-i18n="usernameLabel">ชื่อผู้ใช้งาน (Username)</label>
