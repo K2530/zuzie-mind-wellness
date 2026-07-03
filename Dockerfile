@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
-    sqlite3
+    sqlite3 \
+    libsqlite3-dev
 
 # ติดตั้ง Node.js (สำหรับรัน Vite / npm run build)
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -22,6 +23,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # ติดตั้ง PHP Extensions สำหรับ Laravel
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip pdo_sqlite
 
 # เปิดใช้งาน Apache mod_rewrite
