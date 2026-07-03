@@ -95,18 +95,21 @@
         document.addEventListener('submit', function(e) {
           const form = e.target;
           if (!form.hasAttribute('data-no-loader') && form.target !== '_blank') {
-            globalLoader.classList.remove('hidden');
-            globalLoader.classList.add('flex');
-            setTimeout(() => {
-              globalLoader.classList.remove('opacity-0');
-            }, 10);
+            const isReg = form.action.includes('register') || form.action.includes('login');
+            const isPay = form.action.includes('payment') || form.action.includes('checkout') || form.action.includes('booking');
             
-            if (form.action.includes('register')) {
-              loaderText.innerText = 'กำลังสร้างบัญชีของคุณ...';
-            } else if (form.action.includes('payment') || form.action.includes('checkout') || form.action.includes('booking')) {
-              loaderText.innerText = 'กำลังประมวลผล...';
-            } else {
-              loaderText.innerText = 'กำลังดำเนินการ...';
+            if (isReg || isPay) {
+              globalLoader.classList.remove('hidden');
+              globalLoader.classList.add('flex');
+              setTimeout(() => {
+                globalLoader.classList.remove('opacity-0');
+              }, 10);
+              
+              if (isReg) {
+                loaderText.innerText = 'กำลังเข้าสู่ระบบ...';
+              } else if (isPay) {
+                loaderText.innerText = 'กำลังประมวลผล...';
+              }
             }
           }
         });
