@@ -431,6 +431,54 @@ Route::post('/assessment/rajanukul40', function () {
     ]);
 });
 
+
+Route::post('/assessment/ld-{level}', function ($level) {
+    if (!in_array($level, ['primary', 'secondary'])) {
+        abort(404);
+    }
+    
+    $slug = 'ld-' . $level;
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', $slug);
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    for ($index = 0; $index < 43; $index++) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,1'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    $preScreenScore = array_sum(array_slice($answers, 0, 3));
+    $passPreScreen = $preScreenScore === 3;
+
+    $scores = [
+        'reading' => array_sum(array_slice($answers, 3, 10)),
+        'writing' => array_sum(array_slice($answers, 13, 10)),
+        'math' => array_sum(array_slice($answers, 23, 10)),
+        'behavior' => array_sum(array_slice($answers, 33, 10)),
+    ];
+
+    $cutOffs = $level === 'primary' 
+        ? ['reading' => 7, 'writing' => 7, 'math' => 6, 'behavior' => 4]
+        : ['reading' => 7, 'writing' => 7, 'math' => 5, 'behavior' => 4];
+
+    return view('pages.assessment.result-ld', [
+        'assessment' => $assessmentItem,
+        'level' => $level,
+        'passPreScreen' => $passPreScreen,
+        'scores' => $scores,
+        'cutOffs' => $cutOffs,
+        'answers' => $answers,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);
