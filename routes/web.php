@@ -871,6 +871,67 @@ Route::post('/assessment/thi15', function () {
     ]);
 });
 
+
+Route::post('/assessment/phqa', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'phqa');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        if ($q['type'] === 'scale') {
+            $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+        } else {
+            $rules["answers.$index"] = ['required', 'integer', 'between:0,1'];
+        }
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Calculate total score only for the first 9 questions
+    $score_total = 0;
+    for ($i = 0; $i < 9; $i++) {
+        $score_total += $answers[$i];
+    }
+
+    // Determine depression level
+    if ($score_total >= 20) {
+        $level = 'severe';
+        $level_text = 'มีภาวะซึมเศร้ารุนแรง';
+    } elseif ($score_total >= 15) {
+        $level = 'moderate_severe';
+        $level_text = 'มีภาวะซึมเศร้ามาก';
+    } elseif ($score_total >= 10) {
+        $level = 'moderate';
+        $level_text = 'มีภาวะซึมเศร้าปานกลาง';
+    } elseif ($score_total >= 5) {
+        $level = 'mild';
+        $level_text = 'มีภาวะซึมเศร้าเล็กน้อย';
+    } else {
+        $level = 'normal';
+        $level_text = 'ไม่มีภาวะซึมเศร้า';
+    }
+
+    // Determine suicide risk
+    // Question 9 > 0 or Q10 == 1 or Q11 == 1
+    $suicide_risk = ($answers[8] > 0 || $answers[9] == 1 || $answers[10] == 1);
+
+    return view('pages.assessment.result-phqa', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
+        'suicide_risk' => $suicide_risk,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -1304,6 +1365,67 @@ Route::post('/assessment/thi15', function () {
         'score_total' => $score_total,
         'level' => $level,
         'level_text' => $level_text,
+    ]);
+});
+
+
+Route::post('/assessment/phqa', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'phqa');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        if ($q['type'] === 'scale') {
+            $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+        } else {
+            $rules["answers.$index"] = ['required', 'integer', 'between:0,1'];
+        }
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Calculate total score only for the first 9 questions
+    $score_total = 0;
+    for ($i = 0; $i < 9; $i++) {
+        $score_total += $answers[$i];
+    }
+
+    // Determine depression level
+    if ($score_total >= 20) {
+        $level = 'severe';
+        $level_text = 'มีภาวะซึมเศร้ารุนแรง';
+    } elseif ($score_total >= 15) {
+        $level = 'moderate_severe';
+        $level_text = 'มีภาวะซึมเศร้ามาก';
+    } elseif ($score_total >= 10) {
+        $level = 'moderate';
+        $level_text = 'มีภาวะซึมเศร้าปานกลาง';
+    } elseif ($score_total >= 5) {
+        $level = 'mild';
+        $level_text = 'มีภาวะซึมเศร้าเล็กน้อย';
+    } else {
+        $level = 'normal';
+        $level_text = 'ไม่มีภาวะซึมเศร้า';
+    }
+
+    // Determine suicide risk
+    // Question 9 > 0 or Q10 == 1 or Q11 == 1
+    $suicide_risk = ($answers[8] > 0 || $answers[9] == 1 || $answers[10] == 1);
+
+    return view('pages.assessment.result-phqa', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
+        'suicide_risk' => $suicide_risk,
     ]);
 });
 
