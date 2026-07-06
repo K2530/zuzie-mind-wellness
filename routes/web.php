@@ -759,6 +759,68 @@ Route::post('/assessment/mbi', function () {
     ]);
 });
 
+
+Route::post('/assessment/observe4', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'observe4');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,1'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Calculate scores for each dimension
+    $score_id = 0; // 0-9
+    for ($i = 0; $i < 10; $i++) {
+        $score_id += $answers[$i];
+    }
+    
+    $score_ld = 0; // 10-19
+    for ($i = 10; $i < 20; $i++) {
+        $score_ld += $answers[$i];
+    }
+    
+    $score_adhd = 0; // 20-29
+    for ($i = 20; $i < 30; $i++) {
+        $score_adhd += $answers[$i];
+    }
+    
+    $score_autism = 0; // 30-39
+    for ($i = 30; $i < 40; $i++) {
+        $score_autism += $answers[$i];
+    }
+
+    $risk_id = $score_id >= 6;
+    $risk_ld = $score_ld >= 6;
+    $risk_adhd = $score_adhd >= 6;
+    $risk_autism = $score_autism >= 6;
+
+    $has_any_risk = $risk_id || $risk_ld || $risk_adhd || $risk_autism;
+
+    return view('pages.assessment.result-observe4', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_id' => $score_id,
+        'score_ld' => $score_ld,
+        'score_adhd' => $score_adhd,
+        'score_autism' => $score_autism,
+        'risk_id' => $risk_id,
+        'risk_ld' => $risk_ld,
+        'risk_adhd' => $risk_adhd,
+        'risk_autism' => $risk_autism,
+        'has_any_risk' => $has_any_risk,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -1080,6 +1142,68 @@ Route::post('/assessment/mbi', function () {
         'ee_level' => $ee_level,
         'dp_level' => $dp_level,
         'pa_level' => $pa_level,
+    ]);
+});
+
+
+Route::post('/assessment/observe4', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'observe4');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,1'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Calculate scores for each dimension
+    $score_id = 0; // 0-9
+    for ($i = 0; $i < 10; $i++) {
+        $score_id += $answers[$i];
+    }
+    
+    $score_ld = 0; // 10-19
+    for ($i = 10; $i < 20; $i++) {
+        $score_ld += $answers[$i];
+    }
+    
+    $score_adhd = 0; // 20-29
+    for ($i = 20; $i < 30; $i++) {
+        $score_adhd += $answers[$i];
+    }
+    
+    $score_autism = 0; // 30-39
+    for ($i = 30; $i < 40; $i++) {
+        $score_autism += $answers[$i];
+    }
+
+    $risk_id = $score_id >= 6;
+    $risk_ld = $score_ld >= 6;
+    $risk_adhd = $score_adhd >= 6;
+    $risk_autism = $score_autism >= 6;
+
+    $has_any_risk = $risk_id || $risk_ld || $risk_adhd || $risk_autism;
+
+    return view('pages.assessment.result-observe4', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_id' => $score_id,
+        'score_ld' => $score_ld,
+        'score_adhd' => $score_adhd,
+        'score_autism' => $score_autism,
+        'risk_id' => $risk_id,
+        'risk_ld' => $risk_ld,
+        'risk_adhd' => $risk_adhd,
+        'risk_autism' => $risk_autism,
+        'has_any_risk' => $has_any_risk,
     ]);
 });
 

@@ -158,6 +158,26 @@
         </article>
 
         <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[70%_50%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินสำหรับเด็ก</p>
+            <h3 class="mt-1 text-xl font-bold">ความวิตกกังวล (SCARED)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความวิตกกังวลสำหรับเด็ก (SCARED-Thai version) ชุดใหญ่ 41 ข้อ</p>
+            <a href="{{ route('assessment.show', 'scared') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
+
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[70%_52%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">สำหรับครู / ผู้ปกครอง</p>
+            <h3 class="mt-1 text-xl font-bold">แบบสังเกตพฤติกรรม 4 โรค</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">คัดกรองความเสี่ยงภาวะเรียนรู้ช้า แอลดี สมาธิสั้น และออทิสติก (40 ข้อ)</p>
+            <a href="{{ route('assessment.show', 'observe4') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
+
+        <article class="soft-card overflow-hidden">
           <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[68%_45%]">
           <div class="p-5">
             <p class="text-sm text-ink/65">แบบประเมินเบื้องต้น</p>
@@ -167,8 +187,7 @@
           </div>
         </article>
       </div>
-    </div>
-  </section>
+    </section>
 
   <!-- Section 3 -->
   <section class="py-10 sm:py-20 bg-milk/50">
