@@ -59,6 +59,51 @@ Route::get('/assessment', function () use ($securityHeaders) {
 Route::get('/assessment/result', function () {
     return redirect()->route('assessment');
 });
+Route::get('/assessment/2p', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', '2p');
+    return response()
+        ->view('pages.assessment.2p', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.2p');
+
+Route::post('/assessment/2p', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', '2p');
+
+    $request = request();
+    $hasEvent = $request->input('has_event') === '1';
+    
+    $score = 0;
+    if ($hasEvent) {
+        $q1p = $request->input('q1p') === '1';
+        $q2p = $request->input('q2p') === '1';
+        if ($q1p && $q2p) {
+            $score = 2; // At risk
+        }
+    }
+
+    $band = match (true) {
+        $score >= 2 => ['label' => 'มีความเสี่ยง', 'tone' => '#c85f36', 'summary' => 'ควรส่งพบบุคลากรทางการแพทย์เพื่อยืนยันการวินิจฉัยและให้การรักษาที่เหมาะสมต่อไป'],
+        default => ['label' => 'ไม่มีความเสี่ยง', 'tone' => '#5f8b61', 'summary' => 'คะแนนของคุณอยู่ในระดับปกติ แนะนำให้รักษาวิธีดูแลใจต่อไป'],
+    };
+
+    return response()
+        ->view('pages.assessment.result', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+            'answers' => [],
+            'score' => $score,
+            'maxScore' => 2,
+            'percent' => $score >= 2 ? 100 : 0,
+            'band' => $band,
+            'videos' => array_slice(config('zuzie.videos'), 0, 4),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.2p.submit');
 
 Route::get('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
