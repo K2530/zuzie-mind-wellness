@@ -526,6 +526,99 @@ Route::post('/assessment/pddsq', function () {
     ]);
 });
 
+
+Route::post('/assessment/{assessment}', function ($assessmentSlug) {
+    if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
+        abort(404);
+    }
+    
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', $assessmentSlug);
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,2'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Indices for reverse scoring: 6, 10, 13, 20, 24
+    $reverse_indices = [6, 10, 13, 20, 24];
+    $scored_answers = [];
+    foreach ($answers as $index => $ans) {
+        if (in_array($index, $reverse_indices)) {
+            $scored_answers[$index] = 2 - $ans;
+        } else {
+            $scored_answers[$index] = $ans;
+        }
+    }
+
+    // Scales indices
+    $scales = [
+        'emotional' => [2, 7, 12, 15, 23],
+        'conduct' => [4, 6, 11, 17, 21],
+        'hyperactivity' => [1, 9, 14, 20, 24],
+        'peer' => [5, 10, 13, 18, 22],
+        'prosocial' => [0, 3, 8, 16, 19],
+    ];
+
+    $scale_scores = [];
+    foreach ($scales as $key => $indices) {
+        $scale_scores[$key] = 0;
+        foreach ($indices as $i) {
+            $scale_scores[$key] += $scored_answers[$i];
+        }
+    }
+
+    $total_difficulties = $scale_scores['emotional'] + $scale_scores['conduct'] + $scale_scores['hyperactivity'] + $scale_scores['peer'];
+
+    // Cut-offs
+    $cutoffs = [
+        'sdq-parent' => [
+            'total' => ['risk' => 14, 'problem' => 17],
+            'emotional' => ['risk' => 5, 'problem' => 6],
+            'conduct' => ['risk' => 3, 'problem' => 4],
+            'hyperactivity' => ['risk' => 6, 'problem' => 7],
+            'peer' => ['risk' => 3, 'problem' => 4],
+            'prosocial' => ['risk' => 5, 'problem' => 4], // for prosocial, lower is worse (risk=5, problem<=4)
+        ],
+        'sdq-teacher' => [
+            'total' => ['risk' => 12, 'problem' => 16],
+            'emotional' => ['risk' => 5, 'problem' => 6],
+            'conduct' => ['risk' => 3, 'problem' => 4],
+            'hyperactivity' => ['risk' => 6, 'problem' => 7],
+            'peer' => ['risk' => 4, 'problem' => 5],
+            'prosocial' => ['risk' => 5, 'problem' => 4],
+        ],
+        'sdq-self' => [
+            'total' => ['risk' => 16, 'problem' => 20],
+            'emotional' => ['risk' => 6, 'problem' => 7],
+            'conduct' => ['risk' => 4, 'problem' => 5],
+            'hyperactivity' => ['risk' => 6, 'problem' => 7],
+            'peer' => ['risk' => 4, 'problem' => 6],
+            'prosocial' => ['risk' => 5, 'problem' => 4],
+        ],
+    ];
+
+    $c = $cutoffs[$assessmentSlug];
+
+    return view('pages.assessment.result-sdq', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'scored_answers' => $scored_answers,
+        'scale_scores' => $scale_scores,
+        'total_difficulties' => $total_difficulties,
+        'cutoffs' => $c,
+    ]);
+})->where('assessment', 'sdq-(self|parent|teacher)');
+
 Route::post('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);

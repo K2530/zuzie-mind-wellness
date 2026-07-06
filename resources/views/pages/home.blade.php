@@ -134,6 +134,20 @@
         </article>
 
         <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[64%_45%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินสำหรับเด็กและวัยรุ่น</p>
+            <h3 class="mt-1 text-xl font-bold">แบบประเมินจุดแข็งและจุดอ่อน (SDQ)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินปัญหาอารมณ์, พฤติกรรมเกเร, สมาธิสั้น, ปัญหาเพื่อน และสัมพันธภาพทางสังคม</p>
+            <div class="mt-4 flex flex-col gap-2">
+              <a href="{{ route('assessment.show', 'sdq-self') }}" class="btn-secondary w-full text-sm">🙋 นักเรียนประเมินตนเอง (11-16 ปี)</a>
+              <a href="{{ route('assessment.show', 'sdq-parent') }}" class="btn-secondary w-full text-sm">👨‍👩‍👧 ผู้ปกครองประเมินเด็ก (4-16 ปี)</a>
+              <a href="{{ route('assessment.show', 'sdq-teacher') }}" class="btn-secondary w-full text-sm">👩‍🏫 ครูประเมินนักเรียน (4-16 ปี)</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="soft-card overflow-hidden">
           <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[65%_45%]">
           <div class="p-5">
             <p class="text-sm text-ink/65">แบบประเมินเบื้องต้น</p>
