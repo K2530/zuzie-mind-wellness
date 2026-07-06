@@ -4,10 +4,6 @@
     <div class="container mx-auto px-4 py-8 lg:max-w-3xl">
       <a href="/" class="text-sm font-semibold text-reseda hover:text-ink">‹ กลับสู่หน้าแรก</a>
 
- 'หน้าแรก', 'url' => '/'],
-          ['label' => 'ประเมินพัฒนาการเด็กปฐมวัย (DSPM)']
-      ]" class="mb-6" />
-
       <div class="card p-6 sm:p-8 border-t-4 mb-6" style="border-top-color: #2b6cb0">
         <h1 class="text-2xl font-bold text-ink mb-2">
           แบบบันทึกการเฝ้าระวังและส่งเสริมพัฒนาการเด็กปฐมวัย (DSPM)

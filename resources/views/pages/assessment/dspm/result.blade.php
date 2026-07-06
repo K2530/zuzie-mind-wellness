@@ -4,11 +4,6 @@
     <div class="container mx-auto px-4 py-8 lg:max-w-4xl">
       <a href="{{ route('dspm.index') }}" class="text-sm font-semibold text-reseda hover:text-ink">‹ กลับไปเลือกช่วงอายุ</a>
 
- 'หน้าแรก', 'url' => '/'],
-          ['label' => 'ประเมินพัฒนาการเด็กปฐมวัย (DSPM)', 'url' => route('dspm.index')],
-          ['label' => 'ผลประเมิน']
-      ]" class="mb-6" />
-
       @php
          $tone = $is_delayed ? '#c85f36' : '#5f8b61';
          $label = $is_delayed ? 'สงสัยล่าช้า' : 'สมวัย';
