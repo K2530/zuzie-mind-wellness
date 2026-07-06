@@ -1,4 +1,4 @@
-<x-layouts.app :nav-items="$navItems" title="Zuzie Mind Wellness">
+<x-layouts.app :nav-items="config('zuzie.nav_items')" title="Zuzie Mind Wellness">
   @section('title', 'ประเมินพัฒนาการเด็ก | ช่วงอายุ ' . $range['label'])
 
   <div class="relative bg-milk pt-[70px] sm:pt-[90px]">

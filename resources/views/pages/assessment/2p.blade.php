@@ -1,4 +1,4 @@
-<x-layouts.app :nav-items="$navItems" title="Zuzie Mind Wellness - {{ $assessment['title'] }}">
+<x-layouts.app :nav-items="config('zuzie.nav_items')" title="Zuzie Mind Wellness - {{ $assessment['title'] }}">
   <main class="bg-milk">
     <section class="bg-gradient-to-b from-white to-almond/35 py-10 sm:py-12">
       <div class="container-soft">

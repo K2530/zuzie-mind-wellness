@@ -1,4 +1,4 @@
-<x-layouts.app :nav-items="$navItems" title="ผลการประเมิน">
+<x-layouts.app :nav-items="config('zuzie.nav_items')" title="ผลการประเมิน">
   @section('title', 'ผลประเมิน | ' . $assessment['title'])
 
   <div class="relative bg-milk pt-[70px] sm:pt-[90px]">

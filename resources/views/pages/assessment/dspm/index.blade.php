@@ -1,4 +1,4 @@
-<x-layouts.app :nav-items="$navItems" title="คัดกรองพัฒนาการเด็กปฐมวัย (DSPM)">
+<x-layouts.app :nav-items="config('zuzie.nav_items')" title="คัดกรองพัฒนาการเด็กปฐมวัย (DSPM)">
   
   <div class="relative bg-milk pt-[70px] sm:pt-[90px]">
     <div class="container mx-auto px-4 py-8 lg:max-w-3xl">

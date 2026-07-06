@@ -1,4 +1,4 @@
-<x-layouts.app :nav-items="$navItems" title="ผลประเมิน | คัดกรองพัฒนาการเด็กปฐมวัย">
+<x-layouts.app :nav-items="config('zuzie.nav_items')" title="ผลประเมิน | คัดกรองพัฒนาการเด็กปฐมวัย">
   
   <div class="relative bg-milk pt-[70px] sm:pt-[90px]">
     <div class="container mx-auto px-4 py-8 lg:max-w-4xl">
