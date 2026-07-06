@@ -592,6 +592,67 @@ Route::post('/assessment/rq', function () {
     ]);
 });
 
+
+Route::post('/assessment/scared', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'scared');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,2'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Scales indices
+    $scales = [
+        'panic' => [0, 5, 8, 11, 14, 17, 18, 21, 23, 26, 29, 33, 37],
+        'gad' => [4, 6, 13, 20, 22, 27, 32, 34, 36],
+        'sad' => [3, 7, 12, 15, 19, 24, 28, 30], // wait, index 19 is 'ฉันฝันร้ายว่ามีเรื่องไม่ดีเกิดขึ้นกับตนเอง' which is item 20. But GAD also has 19 (item 20)?
+        // Let's check GAD: 5, 7, 14, 21, 23, 28, 33, 35, 37
+        // GAD indices: 4, 6, 13, 20, 22, 27, 32, 34, 36
+        // Let's check SAD: 4, 8, 13, 16, 20, 25, 29, 31
+        // SAD indices: 3, 7, 12, 15, 19, 24, 28, 30
+        'soc' => [2, 9, 25, 31, 38, 39, 40],
+        'sch' => [1, 10, 16, 35],
+    ];
+
+    $scale_scores = [];
+    foreach ($scales as $key => $indices) {
+        $scale_scores[$key] = 0;
+        foreach ($indices as $i) {
+            $scale_scores[$key] += $answers[$i];
+        }
+    }
+
+    $total_score = array_sum($answers);
+
+    // Cut-offs
+    $cutoffs = [
+        'total' => 25,
+        'panic' => 7,
+        'gad' => 9,
+        'sad' => 5,
+        'soc' => 8,
+        'sch' => 3,
+    ];
+
+    return view('pages.assessment.result-scared', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'scale_scores' => $scale_scores,
+        'total_score' => $total_score,
+        'cutoffs' => $cutoffs,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -743,6 +804,67 @@ Route::post('/assessment/rq', function () {
         'assessment' => $assessmentItem,
         'answers' => $answers,
         'scored_answers' => $scored_answers,
+        'scale_scores' => $scale_scores,
+        'total_score' => $total_score,
+        'cutoffs' => $cutoffs,
+    ]);
+});
+
+
+Route::post('/assessment/scared', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'scared');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,2'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Scales indices
+    $scales = [
+        'panic' => [0, 5, 8, 11, 14, 17, 18, 21, 23, 26, 29, 33, 37],
+        'gad' => [4, 6, 13, 20, 22, 27, 32, 34, 36],
+        'sad' => [3, 7, 12, 15, 19, 24, 28, 30], // wait, index 19 is 'ฉันฝันร้ายว่ามีเรื่องไม่ดีเกิดขึ้นกับตนเอง' which is item 20. But GAD also has 19 (item 20)?
+        // Let's check GAD: 5, 7, 14, 21, 23, 28, 33, 35, 37
+        // GAD indices: 4, 6, 13, 20, 22, 27, 32, 34, 36
+        // Let's check SAD: 4, 8, 13, 16, 20, 25, 29, 31
+        // SAD indices: 3, 7, 12, 15, 19, 24, 28, 30
+        'soc' => [2, 9, 25, 31, 38, 39, 40],
+        'sch' => [1, 10, 16, 35],
+    ];
+
+    $scale_scores = [];
+    foreach ($scales as $key => $indices) {
+        $scale_scores[$key] = 0;
+        foreach ($indices as $i) {
+            $scale_scores[$key] += $answers[$i];
+        }
+    }
+
+    $total_score = array_sum($answers);
+
+    // Cut-offs
+    $cutoffs = [
+        'total' => 25,
+        'panic' => 7,
+        'gad' => 9,
+        'sad' => 5,
+        'soc' => 8,
+        'sch' => 3,
+    ];
+
+    return view('pages.assessment.result-scared', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
         'scale_scores' => $scale_scores,
         'total_score' => $total_score,
         'cutoffs' => $cutoffs,
