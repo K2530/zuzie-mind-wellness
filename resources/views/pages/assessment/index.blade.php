@@ -45,6 +45,18 @@
                 <span class="text-2xl text-ink/45 transition group-hover:translate-x-1 group-hover:text-reseda">›</span>
               </a>
             @endforeach
+
+              <a href="{{ route('dspm.index') }}" class="group grid min-h-[74px] grid-cols-[58px_1fr_24px] items-center gap-3 rounded-lg border border-reseda/10 bg-white/94 px-4 py-3 shadow-[0_10px_28px_rgba(83,76,65,0.06)] transition hover:border-reseda/25 hover:shadow-[0_18px_45px_rgba(83,76,65,0.10)]">
+                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-almond/65 text-reseda">
+                  <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                </span>
+                <span>
+                  <span class="block text-sm font-bold leading-5 text-ink sm:text-base">คัดกรองพัฒนาการเด็กปฐมวัย (DSPM)</span>
+                  <span class="mt-1 block text-xs leading-5 text-ink/62 sm:text-sm">ประเมินและคัดกรองพัฒนาการเด็กแรกเกิด - 60 เดือน เพื่อดูพัฒนาการรายด้าน</span>
+                </span>
+                <span class="text-2xl text-ink/45 transition group-hover:translate-x-1 group-hover:text-reseda">›</span>
+              </a>
+
           </div>
 
           <aside class="grid gap-4">

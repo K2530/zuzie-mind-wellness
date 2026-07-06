@@ -1,10 +1,10 @@
-<x-app-layout>
-  @section('title', 'คัดกรองพัฒนาการเด็กปฐมวัย (DSPM)')
-
+<x-layouts.app :nav-items="$navItems" title="คัดกรองพัฒนาการเด็กปฐมวัย (DSPM)">
+  
   <div class="relative bg-milk pt-[70px] sm:pt-[90px]">
     <div class="container mx-auto px-4 py-8 lg:max-w-3xl">
-      <x-breadcrumb :items="[
-          ['label' => 'หน้าแรก', 'url' => '/'],
+      <a href="/" class="text-sm font-semibold text-reseda hover:text-ink">‹ กลับสู่หน้าแรก</a>
+
+ 'หน้าแรก', 'url' => '/'],
           ['label' => 'ประเมินพัฒนาการเด็กปฐมวัย (DSPM)']
       ]" class="mb-6" />
 
@@ -38,4 +38,4 @@
       </div>
     </div>
   </div>
-</x-app-layout>
+</x-layouts.app>
