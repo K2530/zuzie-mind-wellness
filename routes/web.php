@@ -821,6 +821,56 @@ Route::post('/assessment/observe4', function () {
     ]);
 });
 
+
+Route::post('/assessment/thi15', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'thi15');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Reverse scores for negative questions (index 3, 4, 5)
+    // 0->3, 1->2, 2->1, 3->0 => 3 - answer
+    $score_total = 0;
+    foreach ($answers as $index => $ans) {
+        if (in_array($index, [3, 4, 5])) {
+            $score_total += (3 - $ans);
+        } else {
+            $score_total += $ans;
+        }
+    }
+
+    if ($score_total >= 35) {
+        $level = 'high';
+        $level_text = 'มีความสุขมาก';
+    } elseif ($score_total >= 28) {
+        $level = 'moderate';
+        $level_text = 'มีความสุขปานกลาง';
+    } else {
+        $level = 'low';
+        $level_text = 'มีความสุขน้อย';
+    }
+
+    return view('pages.assessment.result-thi15', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -1204,6 +1254,56 @@ Route::post('/assessment/observe4', function () {
         'risk_adhd' => $risk_adhd,
         'risk_autism' => $risk_autism,
         'has_any_risk' => $has_any_risk,
+    ]);
+});
+
+
+Route::post('/assessment/thi15', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'thi15');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Reverse scores for negative questions (index 3, 4, 5)
+    // 0->3, 1->2, 2->1, 3->0 => 3 - answer
+    $score_total = 0;
+    foreach ($answers as $index => $ans) {
+        if (in_array($index, [3, 4, 5])) {
+            $score_total += (3 - $ans);
+        } else {
+            $score_total += $ans;
+        }
+    }
+
+    if ($score_total >= 35) {
+        $level = 'high';
+        $level_text = 'มีความสุขมาก';
+    } elseif ($score_total >= 28) {
+        $level = 'moderate';
+        $level_text = 'มีความสุขปานกลาง';
+    } else {
+        $level = 'low';
+        $level_text = 'มีความสุขน้อย';
+    }
+
+    return view('pages.assessment.result-thi15', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
     ]);
 });
 
