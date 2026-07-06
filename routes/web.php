@@ -694,6 +694,71 @@ Route::post('/assessment/gad7', function () {
     ]);
 });
 
+
+Route::post('/assessment/mbi', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'mbi');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,6'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // 0-indexed mapped to questions
+    // EE: 1, 2, 3, 6, 8, 13, 14, 16, 20
+    // DP: 5, 10, 11, 15, 22
+    // PA: 4, 7, 9, 12, 17, 18, 19, 21
+    $ee_indices = [0, 1, 2, 5, 7, 12, 13, 15, 19];
+    $dp_indices = [4, 9, 10, 14, 21];
+    $pa_indices = [3, 6, 8, 11, 16, 17, 18, 20];
+
+    $ee_score = 0;
+    foreach ($ee_indices as $i) $ee_score += $answers[$i];
+
+    $dp_score = 0;
+    foreach ($dp_indices as $i) $dp_score += $answers[$i];
+
+    $pa_score = 0;
+    foreach ($pa_indices as $i) $pa_score += $answers[$i];
+
+    // Levels
+    // EE: Low (0-16), Moderate (17-26), High (27+)
+    // DP: Low (0-6), Moderate (7-12), High (13+)
+    // PA: Low (39+), Moderate (32-38), High (0-31) -> PA is reverse, high burnout is low PA
+
+    $ee_level = 'high';
+    if ($ee_score <= 16) $ee_level = 'low';
+    elseif ($ee_score <= 26) $ee_level = 'moderate';
+
+    $dp_level = 'high';
+    if ($dp_score <= 6) $dp_level = 'low';
+    elseif ($dp_score <= 12) $dp_level = 'moderate';
+
+    $pa_level = 'high';
+    if ($pa_score >= 39) $pa_level = 'low';
+    elseif ($pa_score >= 32) $pa_level = 'moderate';
+
+    return view('pages.assessment.result-mbi', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'ee_score' => $ee_score,
+        'dp_score' => $dp_score,
+        'pa_score' => $pa_score,
+        'ee_level' => $ee_level,
+        'dp_level' => $dp_level,
+        'pa_level' => $pa_level,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -950,6 +1015,71 @@ Route::post('/assessment/gad7', function () {
         'answers' => $answers,
         'total_score' => $total_score,
         'band' => $currentBand,
+    ]);
+});
+
+
+Route::post('/assessment/mbi', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'mbi');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,6'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // 0-indexed mapped to questions
+    // EE: 1, 2, 3, 6, 8, 13, 14, 16, 20
+    // DP: 5, 10, 11, 15, 22
+    // PA: 4, 7, 9, 12, 17, 18, 19, 21
+    $ee_indices = [0, 1, 2, 5, 7, 12, 13, 15, 19];
+    $dp_indices = [4, 9, 10, 14, 21];
+    $pa_indices = [3, 6, 8, 11, 16, 17, 18, 20];
+
+    $ee_score = 0;
+    foreach ($ee_indices as $i) $ee_score += $answers[$i];
+
+    $dp_score = 0;
+    foreach ($dp_indices as $i) $dp_score += $answers[$i];
+
+    $pa_score = 0;
+    foreach ($pa_indices as $i) $pa_score += $answers[$i];
+
+    // Levels
+    // EE: Low (0-16), Moderate (17-26), High (27+)
+    // DP: Low (0-6), Moderate (7-12), High (13+)
+    // PA: Low (39+), Moderate (32-38), High (0-31) -> PA is reverse, high burnout is low PA
+
+    $ee_level = 'high';
+    if ($ee_score <= 16) $ee_level = 'low';
+    elseif ($ee_score <= 26) $ee_level = 'moderate';
+
+    $dp_level = 'high';
+    if ($dp_score <= 6) $dp_level = 'low';
+    elseif ($dp_score <= 12) $dp_level = 'moderate';
+
+    $pa_level = 'high';
+    if ($pa_score >= 39) $pa_level = 'low';
+    elseif ($pa_score >= 32) $pa_level = 'moderate';
+
+    return view('pages.assessment.result-mbi', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'ee_score' => $ee_score,
+        'dp_score' => $dp_score,
+        'pa_score' => $pa_score,
+        'ee_level' => $ee_level,
+        'dp_level' => $dp_level,
+        'pa_level' => $pa_level,
     ]);
 });
 
