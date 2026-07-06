@@ -1,6 +1,6 @@
 <?php
 
-$jsonFiles = glob('*.json');
+$jsonFiles = ['2p.json'];
 $assessments = [];
 
 $meta = [
