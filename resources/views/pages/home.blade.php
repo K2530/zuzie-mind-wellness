@@ -88,6 +88,16 @@
             <a href="{{ route('assessment.show', 'eq611') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
           </div>
         </article>
+
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[100%_80%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินสำหรับเด็ก</p>
+            <h3 class="mt-1 text-xl font-bold">ความฉลาดทางอารมณ์วัยรุ่น 12-17 ปี</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความฉลาดทางอารมณ์วัยรุ่นอายุ 12-17 ปี (52 ข้อ)</p>
+            <a href="{{ route('assessment.show', 'eq1217') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
       </div>
     </section>
 
