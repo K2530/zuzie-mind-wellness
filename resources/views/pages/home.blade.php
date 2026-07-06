@@ -196,6 +196,16 @@
             <a href="{{ route('assessment.show', 'phqa') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
           </div>
         </article>
+
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[70%_52%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินสำหรับเด็ก</p>
+            <h3 class="mt-1 text-xl font-bold">ผลกระทบจากเหตุการณ์ภัยพิบัติ (CRIES-13)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความเสี่ยงบาดแผลทางใจ (PTSD) ในเด็กที่เจอเหตุการณ์รุนแรง</p>
+            <a href="{{ route('assessment.show', 'cries13') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
       </div>
     </section>
 

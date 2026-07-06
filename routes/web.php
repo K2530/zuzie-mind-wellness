@@ -985,6 +985,60 @@ Route::post('/assessment/tgmha15', function () {
     ]);
 });
 
+
+Route::post('/assessment/cries13', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'cries13');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // CRIES-13 scoring logic:
+    // Index 0 -> 0 score
+    // Index 1 -> 1 score
+    // Index 2 -> 3 score
+    // Index 3 -> 5 score
+    
+    $score_map = [0 => 0, 1 => 1, 2 => 3, 3 => 5];
+    
+    $score_total = 0;
+    $mapped_answers = [];
+    foreach ($answers as $index => $ans) {
+        $score = $score_map[$ans];
+        $mapped_answers[$index] = $score;
+        $score_total += $score;
+    }
+
+    // Cut-off score = 25
+    if ($score_total >= 25) {
+        $level = 'high_risk';
+        $level_text = 'มีความเสี่ยงต่อภาวะ PTSD';
+    } else {
+        $level = 'low_risk';
+        $level_text = 'ความเสี่ยงต่ำ';
+    }
+
+    return view('pages.assessment.result-cries13', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'mapped_answers' => $mapped_answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -1529,6 +1583,60 @@ Route::post('/assessment/tgmha15', function () {
     return view('pages.assessment.result-tgmha15', [
         'assessment' => $assessmentItem,
         'answers' => $answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
+    ]);
+});
+
+
+Route::post('/assessment/cries13', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'cries13');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // CRIES-13 scoring logic:
+    // Index 0 -> 0 score
+    // Index 1 -> 1 score
+    // Index 2 -> 3 score
+    // Index 3 -> 5 score
+    
+    $score_map = [0 => 0, 1 => 1, 2 => 3, 3 => 5];
+    
+    $score_total = 0;
+    $mapped_answers = [];
+    foreach ($answers as $index => $ans) {
+        $score = $score_map[$ans];
+        $mapped_answers[$index] = $score;
+        $score_total += $score;
+    }
+
+    // Cut-off score = 25
+    if ($score_total >= 25) {
+        $level = 'high_risk';
+        $level_text = 'มีความเสี่ยงต่อภาวะ PTSD';
+    } else {
+        $level = 'low_risk';
+        $level_text = 'ความเสี่ยงต่ำ';
+    }
+
+    return view('pages.assessment.result-cries13', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'mapped_answers' => $mapped_answers,
         'score_total' => $score_total,
         'level' => $level,
         'level_text' => $level_text,
