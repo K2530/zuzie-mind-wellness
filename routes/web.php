@@ -236,6 +236,80 @@ Route::post('/assessment/eq35', function () use ($securityHeaders) {
         ->withHeaders($securityHeaders);
 })->name('assessment.eq35.submit');
 
+
+Route::post('/assessment/eq611', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'eq611');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    for ($index = 0; $index < 60; $index++) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:1,4'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Reverse scoring for items (0-indexed)
+    $reverseItems = [3, 4, 5, 12, 19, 27, 28, 39, 40, 41, 46, 47, 51, 52, 53];
+    foreach ($reverseItems as $index) {
+        $answers[$index] = 5 - $answers[$index];
+    }
+
+    $s11 = array_sum(array_slice($answers, 0, 7));
+    $s12 = array_sum(array_slice($answers, 7, 9));
+    $s13 = array_sum(array_slice($answers, 16, 7));
+    $s21 = array_sum(array_slice($answers, 23, 7));
+    $s22 = array_sum(array_slice($answers, 30, 6));
+    $s23 = array_sum(array_slice($answers, 36, 6));
+    $s31 = array_sum(array_slice($answers, 42, 6));
+    $s32 = array_sum(array_slice($answers, 48, 6));
+    $s33 = array_sum(array_slice($answers, 54, 6));
+
+    $getBand = function($score, $tNormal, $tHigh) {
+        if ($score >= $tHigh) return ['label' => 'สูงกว่าปกติ', 'tone' => '#5f8b61'];
+        if ($score >= $tNormal) return ['label' => 'ปกติ', 'tone' => '#e8a365'];
+        return ['label' => 'ต่ำกว่าปกติ', 'tone' => '#c85f36'];
+    };
+
+    $b11 = $getBand($s11, 18, 25);
+    $b12 = $getBand($s12, 22, 32);
+    $b13 = $getBand($s13, 19, 26);
+    $b21 = $getBand($s21, 20, 26);
+    $b22 = $getBand($s22, 16, 22);
+    $b23 = $getBand($s23, 14, 21);
+    $b31 = $getBand($s31, 16, 22);
+    $b32 = $getBand($s32, 15, 21);
+    $b33 = $getBand($s33, 16, 22);
+
+    return response()
+        ->view('pages.assessment.result-eq611', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+            'scores' => [
+                's11' => ['score' => $s11, 'max' => 28, 'band' => $b11],
+                's12' => ['score' => $s12, 'max' => 36, 'band' => $b12],
+                's13' => ['score' => $s13, 'max' => 28, 'band' => $b13],
+                's21' => ['score' => $s21, 'max' => 28, 'band' => $b21],
+                's22' => ['score' => $s22, 'max' => 24, 'band' => $b22],
+                's23' => ['score' => $s23, 'max' => 24, 'band' => $b23],
+                's31' => ['score' => $s31, 'max' => 24, 'band' => $b31],
+                's32' => ['score' => $s32, 'max' => 24, 'band' => $b32],
+                's33' => ['score' => $s33, 'max' => 24, 'band' => $b33],
+            ],
+            'totalGood' => $s11 + $s12 + $s13,
+            'totalSmart' => $s21 + $s22 + $s23,
+            'totalHappy' => $s31 + $s32 + $s33,
+            'videos' => array_slice(config('zuzie.videos'), 0, 4),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.eq611.submit');
+
 Route::get('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);
