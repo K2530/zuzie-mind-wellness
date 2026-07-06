@@ -384,6 +384,72 @@ Route::post('/assessment/eq1217', function () use ($securityHeaders) {
         ->withHeaders($securityHeaders);
 })->name('assessment.eq1217.submit');
 
+
+// DSPM Module Routes
+Route::prefix('assessment/dspm')->group(function () use ($securityHeaders) {
+    Route::get('/', function () use ($securityHeaders) {
+        $ranges = config('dspm.ranges');
+        return response()
+            ->view('pages.assessment.dspm.index', [
+                'navItems' => config('zuzie.nav_items'),
+                'ranges' => $ranges
+            ])
+            ->withHeaders($securityHeaders);
+    })->name('dspm.index');
+
+    Route::post('/select', function (\Illuminate\Http\Request $request) {
+        $validated = $request->validate([
+            'age_slug' => 'required|string|array_key_exists:dspm.ranges',
+        ]);
+        return redirect()->route('dspm.form', ['age_slug' => $validated['age_slug']]);
+    })->name('dspm.select');
+
+    Route::get('/form/{age_slug}', function ($age_slug) use ($securityHeaders) {
+        $ranges = config('dspm.ranges');
+        if (!array_key_exists($age_slug, $ranges)) abort(404);
+        
+        return response()
+            ->view('pages.assessment.dspm.form', [
+                'navItems' => config('zuzie.nav_items'),
+                'age_slug' => $age_slug,
+                'range' => $ranges[$age_slug]
+            ])
+            ->withHeaders($securityHeaders);
+    })->name('dspm.form');
+
+    Route::post('/submit/{age_slug}', function (\Illuminate\Http\Request $request, $age_slug) use ($securityHeaders) {
+        $ranges = config('dspm.ranges');
+        if (!array_key_exists($age_slug, $ranges)) abort(404);
+        
+        $range = $ranges[$age_slug];
+        
+        $rules = [];
+        foreach ($range['items'] as $index => $item) {
+            $rules["answers.$index"] = ['required', 'string', 'in:pass,fail'];
+        }
+
+        $validated = $request->validate($rules, [
+            'answers.*.required' => 'กรุณาประเมินให้ครบทุกข้อ',
+            'answers.*.in' => 'คำตอบไม่ถูกต้อง',
+        ]);
+
+        $answers = $validated['answers'];
+        
+        $is_delayed = in_array('fail', $answers);
+        
+        return response()
+            ->view('pages.assessment.dspm.result', [
+                'navItems' => config('zuzie.nav_items'),
+                'age_slug' => $age_slug,
+                'range' => $range,
+                'answers' => $answers,
+                'is_delayed' => $is_delayed,
+                'videos' => array_slice(config('zuzie.videos'), 0, 2),
+            ])
+            ->withHeaders($securityHeaders);
+    })->name('dspm.submit');
+});
+
 Route::get('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);
