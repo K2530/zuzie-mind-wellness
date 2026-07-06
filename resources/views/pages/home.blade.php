@@ -45,7 +45,17 @@
             <p class="text-sm text-ink/65">แบบประเมินเฉพาะทาง</p>
             <h3 class="mt-1 text-xl font-bold">โรคเครียดหลังเหตุการณ์สะเทือนขวัญ (2P)</h3>
             <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความเสี่ยงต่อการเกิดโรคเครียดหลังเหตุการณ์สะเทือนขวัญ (PTSD)</p>
-            <a href="{{ route('assessment.show', '2p') }}" class="btn-secondary mt-4 w-full" data-i18n="startNow">เริ่มทำแบบประเมิน</a>
+            <a href="{{ route('assessment.show', '2p') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
+
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[64%_46%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินต่อเนื่อง</p>
+            <h3 class="mt-1 text-xl font-bold">โรคซึมเศร้าและฆ่าตัวตาย (2Q/9Q/8Q)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความเสี่ยงต่อการเกิดโรคซึมเศร้าและแนวโน้มการฆ่าตัวตาย</p>
+            <a href="{{ route('assessment.show', '2q') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
           </div>
         </article>
       </div>
