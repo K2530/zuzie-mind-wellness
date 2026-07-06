@@ -185,6 +185,57 @@ Route::post('/assessment/2q', function () use ($securityHeaders) {
         ->withHeaders($securityHeaders);
 })->name('assessment.2q.submit');
 
+Route::post('/assessment/eq35', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'eq35');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    for ($index = 0; $index < 15; $index++) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:1,4'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    $scoreGood = $answers[0] + $answers[1] + $answers[2] + $answers[3] + $answers[4];
+    $scoreSmart = $answers[5] + $answers[6] + $answers[7] + $answers[8] + $answers[9];
+    $scoreHappy = $answers[10] + $answers[11] + $answers[12] + (5 - $answers[13]) + $answers[14];
+    $scoreTotal = $scoreGood + $scoreSmart + $scoreHappy;
+
+    $getBand = function($score, $tNormal, $tHigh) {
+        if ($score >= $tHigh) return ['label' => 'สูงกว่าปกติ', 'tone' => '#5f8b61'];
+        if ($score >= $tNormal) return ['label' => 'ปกติ', 'tone' => '#e8a365'];
+        return ['label' => 'ต่ำกว่าปกติ', 'tone' => '#c85f36'];
+    };
+
+    $bandGood = $getBand($scoreGood, 12, 20);
+    $bandSmart = $getBand($scoreSmart, 13, 20);
+    $bandHappy = $getBand($scoreHappy, 13, 19);
+    $bandTotal = $getBand($scoreTotal, 40, 56);
+
+    return response()
+        ->view('pages.assessment.result-eq35', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+            'scoreGood' => $scoreGood,
+            'bandGood' => $bandGood,
+            'scoreSmart' => $scoreSmart,
+            'bandSmart' => $bandSmart,
+            'scoreHappy' => $scoreHappy,
+            'bandHappy' => $bandHappy,
+            'scoreTotal' => $scoreTotal,
+            'bandTotal' => $bandTotal,
+            'videos' => array_slice(config('zuzie.videos'), 0, 4),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.eq35.submit');
+
 Route::get('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);

@@ -68,6 +68,16 @@
             <a href="{{ route('assessment.show', 'cdi') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
           </div>
         </article>
+
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[80%_60%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินสำหรับเด็ก</p>
+            <h3 class="mt-1 text-xl font-bold">ความฉลาดทางอารมณ์เด็ก 3-5 ปี</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความฉลาดทางอารมณ์เด็กอายุ 3-5 ปี (ฉบับย่อ)</p>
+            <a href="{{ route('assessment.show', 'eq35') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
       </div>
     </section>
 
