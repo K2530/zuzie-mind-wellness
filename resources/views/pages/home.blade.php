@@ -156,6 +156,30 @@
             <a href="{{ route('assessment.show', 'st5') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 -->
+  <section class="py-10 sm:py-20 bg-milk/50">
+    <div class="mx-auto max-w-7xl px-5 sm:px-10">
+      <div class="mb-10 sm:text-center">
+        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">แบบประเมินสำหรับวัยผู้ใหญ่</h2>
+        <p class="mt-4 text-lg text-ink/70">
+          เครื่องมือประเมินสุขภาพจิตที่ออกแบบมาเพื่อวัยทำงานและผู้ใหญ่
+        </p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[64%_45%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินเฉพาะด้าน</p>
+            <h3 class="mt-1 text-xl font-bold">พลังสุขภาพจิต (RQ)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความสามารถในการปรับตัวและฟื้นตัวจากวิกฤต (ความอึด ฮึด สู้)</p>
+            <a href="{{ route('assessment.show', 'rq') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
 
         <article class="soft-card overflow-hidden">
           <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[64%_46%]">

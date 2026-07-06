@@ -527,6 +527,71 @@ Route::post('/assessment/pddsq', function () {
 });
 
 
+
+Route::post('/assessment/rq', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'rq');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Indices for reverse scoring: Q1(0), Q5(4), Q14(13), Q15(14), Q16(15)
+    $reverse_indices = [0, 4, 13, 14, 15];
+    $scored_answers = [];
+    foreach ($answers as $index => $ans) {
+        if (in_array($index, $reverse_indices)) {
+            $scored_answers[$index] = 4 - $ans;
+        } else {
+            $scored_answers[$index] = $ans + 1;
+        }
+    }
+
+    // Scales indices
+    $scales = [
+        'emotional' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        'morale' => [10, 11, 12, 13, 14],
+        'problem' => [15, 16, 17, 18, 19],
+    ];
+
+    $scale_scores = [];
+    foreach ($scales as $key => $indices) {
+        $scale_scores[$key] = 0;
+        foreach ($indices as $i) {
+            $scale_scores[$key] += $scored_answers[$i];
+        }
+    }
+
+    $total_score = array_sum($scale_scores);
+
+    // Cut-offs
+    $cutoffs = [
+        'total' => ['low' => 55, 'high' => 70],
+        'emotional' => ['low' => 27, 'high' => 35],
+        'morale' => ['low' => 14, 'high' => 20],
+        'problem' => ['low' => 13, 'high' => 19],
+    ];
+
+    return view('pages.assessment.result-rq', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'scored_answers' => $scored_answers,
+        'scale_scores' => $scale_scores,
+        'total_score' => $total_score,
+        'cutoffs' => $cutoffs,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -618,6 +683,71 @@ Route::post('/assessment/{assessment}', function ($assessmentSlug) {
         'cutoffs' => $c,
     ]);
 })->where('assessment', 'sdq-(self|parent|teacher)');
+
+
+Route::post('/assessment/rq', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'rq');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Indices for reverse scoring: Q1(0), Q5(4), Q14(13), Q15(14), Q16(15)
+    $reverse_indices = [0, 4, 13, 14, 15];
+    $scored_answers = [];
+    foreach ($answers as $index => $ans) {
+        if (in_array($index, $reverse_indices)) {
+            $scored_answers[$index] = 4 - $ans;
+        } else {
+            $scored_answers[$index] = $ans + 1;
+        }
+    }
+
+    // Scales indices
+    $scales = [
+        'emotional' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        'morale' => [10, 11, 12, 13, 14],
+        'problem' => [15, 16, 17, 18, 19],
+    ];
+
+    $scale_scores = [];
+    foreach ($scales as $key => $indices) {
+        $scale_scores[$key] = 0;
+        foreach ($indices as $i) {
+            $scale_scores[$key] += $scored_answers[$i];
+        }
+    }
+
+    $total_score = array_sum($scale_scores);
+
+    // Cut-offs
+    $cutoffs = [
+        'total' => ['low' => 55, 'high' => 70],
+        'emotional' => ['low' => 27, 'high' => 35],
+        'morale' => ['low' => 14, 'high' => 20],
+        'problem' => ['low' => 13, 'high' => 19],
+    ];
+
+    return view('pages.assessment.result-rq', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'scored_answers' => $scored_answers,
+        'scale_scores' => $scale_scores,
+        'total_score' => $total_score,
+        'cutoffs' => $cutoffs,
+    ]);
+});
 
 Route::post('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
