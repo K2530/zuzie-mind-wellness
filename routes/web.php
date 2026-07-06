@@ -1108,6 +1108,106 @@ Route::post('/assessment/cvc', function () use ($securityHeaders) {
         ])
         ->withHeaders($securityHeaders);
 })->name('assessment.cvc.submit');
+
+Route::post('/assessment/cmhi', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'cmhi');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,4'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // Negative items: 21-26, 27-32 (index 21 to 32)
+    // Wait, questions 22 to 33 are index 21 to 32
+    $reverse_indices = [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32];
+    $scored_answers = [];
+    foreach ($answers as $index => $ans) {
+        if (in_array($index, $reverse_indices)) {
+            $scored_answers[$index] = 4 - $ans;
+        } else {
+            $scored_answers[$index] = $ans;
+        }
+    }
+
+    $scales = [
+        'social_capital' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        'environment' => [10, 11, 12, 13, 14, 15],
+        'economic_family' => [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
+        'health_threats' => [27, 28, 29, 30, 31, 32, 33, 34, 35],
+    ];
+
+    $scale_scores = [];
+    foreach ($scales as $key => $indices) {
+        $scale_scores[$key] = 0;
+        foreach ($indices as $i) {
+            $scale_scores[$key] += $scored_answers[$i];
+        }
+    }
+
+    $total_score = array_sum($scale_scores);
+
+    $getSocialCapitalBand = function($score) {
+        if ($score >= 27) return ['label' => 'สูง', 'tone' => '#5f8b61'];
+        if ($score >= 14) return ['label' => 'กลาง', 'tone' => '#b3794f'];
+        return ['label' => 'ต่ำ', 'tone' => '#c85f36'];
+    };
+
+    $getEnvironmentBand = function($score) {
+        if ($score >= 16) return ['label' => 'สูง', 'tone' => '#5f8b61'];
+        if ($score >= 8) return ['label' => 'กลาง', 'tone' => '#b3794f'];
+        return ['label' => 'ต่ำ', 'tone' => '#c85f36'];
+    };
+
+    $getEconomicBand = function($score) {
+        if ($score >= 30) return ['label' => 'สูง', 'tone' => '#5f8b61'];
+        if ($score >= 15) return ['label' => 'กลาง', 'tone' => '#b3794f'];
+        return ['label' => 'ต่ำ', 'tone' => '#c85f36'];
+    };
+
+    $getHealthBand = function($score) {
+        if ($score >= 24) return ['label' => 'สูง', 'tone' => '#5f8b61'];
+        if ($score >= 12) return ['label' => 'กลาง', 'tone' => '#b3794f'];
+        return ['label' => 'ต่ำ', 'tone' => '#c85f36'];
+    };
+
+    $getTotalBand = function($score) {
+        if ($score >= 96) return ['label' => 'ระดับสูง', 'tone' => '#5f8b61', 'summary' => 'ชุมชนของคุณมีระดับสุขภาพจิตที่ดีมาก ควรสนับสนุนกิจกรรมให้ชุมชนมีความเข้มแข็งต่อไป'];
+        if ($score >= 48) return ['label' => 'ระดับปานกลาง', 'tone' => '#b3794f', 'summary' => 'ชุมชนของคุณมีระดับสุขภาพจิตปานกลาง อาจมีบางประเด็นที่ต้องพัฒนาหรือแก้ไขร่วมกัน'];
+        return ['label' => 'ระดับต่ำ', 'tone' => '#c85f36', 'summary' => 'ชุมชนของคุณมีประเด็นสุขภาพจิตหลายด้านที่ควรได้รับการดูแลและพัฒนาอย่างจริงจัง'];
+    };
+
+    return response()
+        ->view('pages.assessment.result-cmhi', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+            'answers' => $answers,
+            'scored_answers' => $scored_answers,
+            'scale_scores' => $scale_scores,
+            'total_score' => $total_score,
+            'scale_bands' => [
+                'social_capital' => $getSocialCapitalBand($scale_scores['social_capital']),
+                'environment' => $getEnvironmentBand($scale_scores['environment']),
+                'economic_family' => $getEconomicBand($scale_scores['economic_family']),
+                'health_threats' => $getHealthBand($scale_scores['health_threats']),
+            ],
+            'band' => $getTotalBand($total_score),
+            'score' => $total_score,
+            'maxScore' => 144,
+            'percent' => (int) round(($total_score / 144) * 100),
+            'videos' => array_slice(config('zuzie.videos'), 0, 4),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.cmhi.submit');
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
