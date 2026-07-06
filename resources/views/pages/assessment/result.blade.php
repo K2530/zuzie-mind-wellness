@@ -43,9 +43,19 @@
             <div class="mt-6 rounded-lg border border-reseda/10 bg-milk p-4">
               <h3 class="text-sm font-bold text-ink" data-i18n="initialAdvice">คำแนะนำเบื้องต้น</h3>
               <ul class="mt-3 grid gap-2 text-sm leading-6 text-ink/70 list-disc pl-4">
-                <li data-i18n="advice1">สังเกตอารมณ์ ร่างกาย และสิ่งกระตุ้นที่ทำให้อาการเพิ่มขึ้น</li>
-                <li data-i18n="advice2">ให้เวลากับการพัก การนอน และการลดสิ่งที่กดดันเกินจำเป็น</li>
-                <li data-i18n="advice3">พูดคุยกับคนที่ไว้ใจ หรือจองคิวผู้เชี่ยวชาญหากอาการรบกวนชีวิตประจำวัน</li>
+                @if(isset($band['advice']) && is_array($band['advice']))
+                  @foreach($band['advice'] as $advice)
+                    <li>{{ $advice }}</li>
+                  @endforeach
+                @elseif(isset($assessment['advice']) && is_array($assessment['advice']))
+                  @foreach($assessment['advice'] as $advice)
+                    <li>{{ $advice }}</li>
+                  @endforeach
+                @else
+                  <li data-i18n="advice1">สังเกตอารมณ์ ร่างกาย และสิ่งกระตุ้นที่ทำให้อาการเพิ่มขึ้น</li>
+                  <li data-i18n="advice2">ให้เวลากับการพัก การนอน และการลดสิ่งที่กดดันเกินจำเป็น</li>
+                  <li data-i18n="advice3">พูดคุยกับคนที่ไว้ใจ หรือจองคิวผู้เชี่ยวชาญหากอาการรบกวนชีวิตประจำวัน</li>
+                @endif
               </ul>
             </div>
           </aside>
