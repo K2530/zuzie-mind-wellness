@@ -51,6 +51,7 @@
           </aside>
         </div>
 
+        @if(!empty($answers))
         <section class="mt-8 rounded-lg border border-reseda/10 bg-white/88 p-5 shadow-[0_14px_38px_rgba(83,76,65,0.06)] sm:p-7">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -76,11 +77,13 @@
                   <span class="lang-th">{{ $index + 1 }}. {{ $qText }}</span>
                   <span class="lang-en hidden">{{ $index + 1 }}. {{ $qTextEn }}</span>
                 </p>
-                <div class="rounded-full bg-white px-4 py-2 text-center text-sm font-bold text-reseda">{{ $answers[$index] }} / {{ $qMaxScore }}</div>
+                <div class="rounded-full bg-white px-4 py-2 text-center text-sm font-bold text-reseda">{{ $answers[$index] ?? '-' }} / {{ $qMaxScore }}</div>
               </div>
             @endforeach
           </div>
         </section>
+        @endif
+
 
         <section class="mt-8">
           <div class="flex flex-wrap items-end justify-between gap-4 border-b border-reseda/15 pb-4">
