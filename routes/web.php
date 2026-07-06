@@ -1039,6 +1039,75 @@ Route::post('/assessment/cries13', function () {
     ]);
 });
 
+
+Route::post('/assessment/cvc', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'cvc');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,2'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    $scales = [
+        'safe' => [0, 1, 2],
+        'calm' => [3, 4, 5],
+        'hope' => [6, 7, 8],
+        'care' => [9, 10, 11],
+    ];
+
+    $scale_scores = [];
+    foreach ($scales as $key => $indices) {
+        $scale_scores[$key] = 0;
+        foreach ($indices as $i) {
+            $scale_scores[$key] += $answers[$i];
+        }
+    }
+
+    $total_score = array_sum($scale_scores);
+
+    $getScaleBand = function($score) {
+        if ($score >= 5) return ['label' => 'สูง', 'tone' => '#5f8b61'];
+        if ($score >= 3) return ['label' => 'กลาง', 'tone' => '#b3794f'];
+        return ['label' => 'ต่ำ', 'tone' => '#c85f36'];
+    };
+
+    $getTotalBand = function($score) {
+        if ($score >= 19) return ['label' => 'ระดับสูง (A)', 'tone' => '#5f8b61', 'summary' => 'ชุมชนของคุณมีความเข้มแข็ง มีการเสริมสร้างวัคซีนใจและจัดการกับปัญหาในชุมชนได้ดีเยี่ยม ชุมชนของคุณควรพยายามคงระดับวัคซีนใจในระดับนี้ต่อไปให้นาน ๆ'];
+        if ($score >= 12) return ['label' => 'ระดับปานกลาง (B)', 'tone' => '#b3794f', 'summary' => 'ชุมชนของคุณมีความสามารถในการเสริมสร้างวัคซีนใจและจัดการกับวิกฤตได้ระดับดี แต่ยังมีบางประเด็นที่ต้องพัฒนาให้ดีขึ้น'];
+        return ['label' => 'ระดับต่ำ (C)', 'tone' => '#c85f36', 'summary' => 'ชุมชนของคุณมีหลายประเด็นที่ต้องพัฒนาให้ดีขึ้น'];
+    };
+
+    return response()
+        ->view('pages.assessment.result-cvc', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+            'answers' => $answers,
+            'scale_scores' => $scale_scores,
+            'total_score' => $total_score,
+            'scale_bands' => [
+                'safe' => $getScaleBand($scale_scores['safe']),
+                'calm' => $getScaleBand($scale_scores['calm']),
+                'hope' => $getScaleBand($scale_scores['hope']),
+                'care' => $getScaleBand($scale_scores['care']),
+            ],
+            'band' => $getTotalBand($total_score),
+            'score' => $total_score,
+            'maxScore' => 24,
+            'percent' => (int) round(($total_score / 24) * 100),
+            'videos' => array_slice(config('zuzie.videos'), 0, 4),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.cvc.submit');
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
