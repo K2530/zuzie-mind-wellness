@@ -932,6 +932,59 @@ Route::post('/assessment/phqa', function () {
     ]);
 });
 
+
+Route::post('/assessment/tgmha15', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'tgmha15');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // T-GMHA-15 scoring logic:
+    // Option index 0=ไม่เลย, 1=เล็กน้อย, 2=มาก, 3=มากที่สุด
+    // Normal score: Index + 1 (1 to 4)
+    // Reverse score (for item 3): 4 - Index (4 to 1)
+
+    $score_total = 0;
+    foreach ($answers as $index => $ans) {
+        if ($index === 2) { // Item 3 (0-based index is 2)
+            $score_total += (4 - $ans);
+        } else {
+            $score_total += ($ans + 1);
+        }
+    }
+
+    if ($score_total >= 50) {
+        $level = 'high';
+        $level_text = 'สุขภาพจิตดีกว่าคนทั่วไป';
+    } elseif ($score_total >= 43) {
+        $level = 'moderate';
+        $level_text = 'สุขภาพจิตเท่ากับคนทั่วไป';
+    } else {
+        $level = 'low';
+        $level_text = 'สุขภาพจิตต่ำกว่าคนทั่วไป';
+    }
+
+    return view('pages.assessment.result-tgmha15', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -1426,6 +1479,59 @@ Route::post('/assessment/phqa', function () {
         'level' => $level,
         'level_text' => $level_text,
         'suicide_risk' => $suicide_risk,
+    ]);
+});
+
+
+Route::post('/assessment/tgmha15', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'tgmha15');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    // T-GMHA-15 scoring logic:
+    // Option index 0=ไม่เลย, 1=เล็กน้อย, 2=มาก, 3=มากที่สุด
+    // Normal score: Index + 1 (1 to 4)
+    // Reverse score (for item 3): 4 - Index (4 to 1)
+
+    $score_total = 0;
+    foreach ($answers as $index => $ans) {
+        if ($index === 2) { // Item 3 (0-based index is 2)
+            $score_total += (4 - $ans);
+        } else {
+            $score_total += ($ans + 1);
+        }
+    }
+
+    if ($score_total >= 50) {
+        $level = 'high';
+        $level_text = 'สุขภาพจิตดีกว่าคนทั่วไป';
+    } elseif ($score_total >= 43) {
+        $level = 'moderate';
+        $level_text = 'สุขภาพจิตเท่ากับคนทั่วไป';
+    } else {
+        $level = 'low';
+        $level_text = 'สุขภาพจิตต่ำกว่าคนทั่วไป';
+    }
+
+    return view('pages.assessment.result-tgmha15', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'score_total' => $score_total,
+        'level' => $level,
+        'level_text' => $level_text,
     ]);
 });
 

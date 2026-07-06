@@ -302,6 +302,31 @@
       </div>
     </section>
 
+
+  <!-- Section 4 -->
+  <section class="py-10 sm:py-20 bg-white border-t border-reseda/10">
+    <div class="mx-auto max-w-7xl px-5 sm:px-10">
+      <div class="mb-10 sm:text-center">
+        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl text-ink">แบบประเมินสำหรับผู้สูงอายุ (60 ปีขึ้นไป)</h2>
+        <p class="mt-4 text-lg text-ink/70">
+          เครื่องมือประเมินสุขภาพจิตที่ออกแบบมาเพื่อผู้สูงอายุโดยเฉพาะ
+        </p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[70%_52%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินสุขภาพจิต</p>
+            <h3 class="mt-1 text-xl font-bold">สุขภาพจิตผู้สูงอายุ (T-GMHA-15)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินสุขภาพจิตสำหรับผู้สูงอายุ 60 ปีขึ้นไป ฉบับสั้น (15 ข้อ)</p>
+            <a href="{{ route('assessment.show', 'tgmha15') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
     <section id="videos" class="border-y border-reseda/10 bg-white py-14">
       <div class="container-soft grid gap-8 lg:grid-cols-[260px_1fr]">
         <div>
