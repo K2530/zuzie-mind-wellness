@@ -398,6 +398,39 @@ Route::get('/assessment/{assessment}', function (string $assessment) use ($secur
         ->withHeaders($securityHeaders);
 })->name('assessment.show');
 
+
+Route::post('/assessment/rajanukul40', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'rajanukul40');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    for ($index = 0; $index < 40; $index++) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,1'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    $scores = [
+        'slow_learner' => array_sum(array_slice($answers, 0, 10)),
+        'ld' => array_sum(array_slice($answers, 10, 10)),
+        'adhd' => array_sum(array_slice($answers, 20, 10)),
+        'autism' => array_sum(array_slice($answers, 30, 10)),
+    ];
+
+    return view('pages.assessment.result-rajanukul40', [
+        'assessment' => $assessmentItem,
+        'scores' => $scores,
+        'answers' => $answers,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);

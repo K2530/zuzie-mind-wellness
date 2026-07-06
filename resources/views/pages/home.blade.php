@@ -78,9 +78,26 @@
             <a href="{{ route('assessment.show', 'spst20') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
           </div>
         </article>
+      </div>
 
+      <div class="mt-8 flex items-center gap-4">
+        <h2 class="text-2xl font-bold text-ink">แบบประเมินสำหรับเด็ก</h2>
+        <div class="h-px flex-1 bg-reseda/20"></div>
+      </div>
+      
+      <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         <article class="soft-card overflow-hidden">
           <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[63%_45%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินเบื้องต้น</p>
+            <h3 class="mt-1 text-xl font-bold">พฤติกรรมเด็ก 4 ภาวะ (6-12 ปี)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">แบบสังเกตพฤติกรรม สมาธิสั้น ออทิสซึม แอลดี และเรียนรู้ช้า (สถาบันราชานุกูล)</p>
+            <a href="{{ route('assessment.show', 'rajanukul40') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
+
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[64%_45%]">
           <div class="p-5">
             <p class="text-sm text-ink/65">แบบประเมินเบื้องต้น</p>
             <h3 class="mt-1 text-xl font-bold">แบบประเมินความเครียด (ST-5)</h3>
