@@ -156,6 +156,16 @@
             <a href="{{ route('assessment.show', 'st5') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
           </div>
         </article>
+
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[68%_45%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินเบื้องต้น</p>
+            <h3 class="mt-1 text-xl font-bold">ภาวะวิตกกังวล (GAD-7)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินระดับความวิตกกังวลทั่วไป 7 ข้อ ในช่วง 2 สัปดาห์ที่ผ่านมา</p>
+            <a href="{{ route('assessment.show', 'gad7') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
       </div>
     </div>
   </section>

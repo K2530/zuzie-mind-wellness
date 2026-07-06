@@ -653,6 +653,47 @@ Route::post('/assessment/scared', function () {
     ]);
 });
 
+
+Route::post('/assessment/gad7', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'gad7');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+    $total_score = array_sum($answers);
+
+    // Determine band
+    $currentBand = null;
+    foreach ($assessmentItem['bands'] as $band) {
+        if ($total_score <= $band['max']) {
+            $currentBand = $band;
+            break;
+        }
+    }
+    // Fallback if score exceeds all maxes (should not happen since max is 21)
+    if (!$currentBand) {
+        $currentBand = end($assessmentItem['bands']);
+    }
+
+    return view('pages.assessment.result-gad7', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'total_score' => $total_score,
+        'band' => $currentBand,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function ($assessmentSlug) {
     if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
@@ -868,6 +909,47 @@ Route::post('/assessment/scared', function () {
         'scale_scores' => $scale_scores,
         'total_score' => $total_score,
         'cutoffs' => $cutoffs,
+    ]);
+});
+
+
+Route::post('/assessment/gad7', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'gad7');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,3'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+    $total_score = array_sum($answers);
+
+    // Determine band
+    $currentBand = null;
+    foreach ($assessmentItem['bands'] as $band) {
+        if ($total_score <= $band['max']) {
+            $currentBand = $band;
+            break;
+        }
+    }
+    // Fallback if score exceeds all maxes (should not happen since max is 21)
+    if (!$currentBand) {
+        $currentBand = end($assessmentItem['bands']);
+    }
+
+    return view('pages.assessment.result-gad7', [
+        'assessment' => $assessmentItem,
+        'answers' => $answers,
+        'total_score' => $total_score,
+        'band' => $currentBand,
     ]);
 });
 
