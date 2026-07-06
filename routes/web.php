@@ -399,7 +399,7 @@ Route::prefix('assessment/dspm')->group(function () use ($securityHeaders) {
 
     Route::post('/select', function (\Illuminate\Http\Request $request) {
         $validated = $request->validate([
-            'age_slug' => 'required|string|array_key_exists:dspm.ranges',
+            'age_slug' => 'required|string|in:' . implode(',', array_keys(config('dspm.ranges'))),
         ]);
         return redirect()->route('dspm.form', ['age_slug' => $validated['age_slug']]);
     })->name('dspm.select');
