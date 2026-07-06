@@ -105,6 +105,86 @@ Route::post('/assessment/2p', function () use ($securityHeaders) {
         ->withHeaders($securityHeaders);
 })->name('assessment.2p.submit');
 
+Route::get('/assessment/2q', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', '2q');
+    return response()
+        ->view('pages.assessment.2q', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.2q');
+
+Route::post('/assessment/2q', function () use ($securityHeaders) {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', '2q');
+
+    $request = request();
+
+    // 1. Calculate 2Q Score
+    $score2q = 0;
+    if ($request->input('q2q_1') === '1') $score2q += 1;
+    if ($request->input('q2q_2') === '1') $score2q += 1;
+
+    $band2q = match (true) {
+        $score2q >= 1 => ['label' => 'มีความเสี่ยง', 'tone' => '#c85f36'],
+        default => ['label' => 'ปกติ', 'tone' => '#5f8b61'],
+    };
+
+    // 2. Calculate 9Q Score
+    $score9q = 0;
+    if ($score2q >= 1) {
+        for ($i = 1; $i <= 9; $i++) {
+            $score9q += (int) $request->input("q9q_$i", 0);
+        }
+    }
+
+    $band9q = match (true) {
+        $score9q >= 19 => ['label' => 'รุนแรง', 'tone' => '#8f2d2d'],
+        $score9q >= 13 => ['label' => 'ปานกลาง', 'tone' => '#c85f36'],
+        $score9q >= 7 => ['label' => 'น้อย', 'tone' => '#b3794f'],
+        default => ['label' => 'ไม่มี/น้อยมาก', 'tone' => '#5f8b61'],
+    };
+
+    // 3. Calculate 8Q Score
+    $score8q = 0;
+    if ($score9q >= 7) {
+        if ($request->input('q8q_1') === '1') $score8q += 1;
+        if ($request->input('q8q_2') === '1') $score8q += 2;
+        if ($request->input('q8q_3') === '1') {
+            $score8q += 6;
+            if ($request->input('q8q_3_1') === '1') $score8q += 8; // Cannot control
+        }
+        if ($request->input('q8q_4') === '1') $score8q += 8;
+        if ($request->input('q8q_5') === '1') $score8q += 9;
+        if ($request->input('q8q_6') === '1') $score8q += 4;
+        if ($request->input('q8q_7') === '1') $score8q += 10;
+        if ($request->input('q8q_8') === '1') $score8q += 4;
+    }
+
+    $band8q = match (true) {
+        $score8q >= 17 => ['label' => 'รุนแรง', 'tone' => '#8f2d2d', 'summary' => 'แนะนำให้ส่งต่อโรงพยาบาลที่มีจิตแพทย์ด่วน'],
+        $score8q >= 9 => ['label' => 'ปานกลาง', 'tone' => '#c85f36', 'summary' => 'มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับปานกลาง แนะนำให้ปรึกษาผู้เชี่ยวชาญ'],
+        $score8q >= 1 => ['label' => 'น้อย', 'tone' => '#b3794f', 'summary' => 'มีแนวโน้มที่จะฆ่าตัวตายในปัจจุบัน ระดับน้อย แนะนำให้พูดคุยกับผู้เชี่ยวชาญ'],
+        default => ['label' => 'ไม่มี', 'tone' => '#5f8b61', 'summary' => 'ไม่มีแนวโน้มฆ่าตัวตายในปัจจุบัน'],
+    };
+
+    return response()
+        ->view('pages.assessment.result-2q', [
+            'navItems' => config('zuzie.nav_items'),
+            'assessment' => $assessmentItem,
+            'score2q' => $score2q,
+            'band2q' => $band2q,
+            'score9q' => $score9q,
+            'band9q' => $band9q,
+            'score8q' => $score8q,
+            'band8q' => $band8q,
+            'videos' => array_slice(config('zuzie.videos'), 0, 4),
+        ])
+        ->withHeaders($securityHeaders);
+})->name('assessment.2q.submit');
+
 Route::get('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);
