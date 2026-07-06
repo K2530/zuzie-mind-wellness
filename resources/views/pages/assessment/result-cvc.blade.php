@@ -1,13 +1,9 @@
-<x-app-layout>
+<x-layouts.app :nav-items="$navItems" title="ผลการประเมิน">
   @section('title', 'ผลประเมิน | ' . $assessment['title'])
 
   <div class="relative bg-milk pt-[70px] sm:pt-[90px]">
     <div class="container mx-auto px-4 py-8 lg:max-w-4xl">
-      <x-breadcrumb :items="[
-          ['label' => 'หน้าแรก', 'url' => '/'],
-          ['label' => $assessment['title'], 'url' => route('assessment.show', $assessment['slug'])],
-          ['label' => 'ผลประเมิน']
-      ]" class="mb-6" />
+      <a href="/assessment" class="text-sm font-semibold text-reseda hover:text-ink mb-6 inline-block">‹ กลับไปเลือกแบบประเมิน</a>
 
       <div class="card flex flex-col sm:flex-row gap-6 p-6 sm:p-8 border-t-4 mb-6" style="border-top-color: {{ $band['tone'] }}">
         <div class="flex-1">
@@ -98,4 +94,4 @@
 
     </div>
   </div>
-</x-app-layout>
+</x-layouts.app>

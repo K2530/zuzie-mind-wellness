@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.app :nav-items="$navItems" title="ผลการประเมิน">
   <div class="px-5 pb-8 pt-5 sm:px-10 sm:pt-10">
     <div class="mx-auto max-w-4xl space-y-6">
       
@@ -125,4 +125,4 @@
 
     </div>
   </div>
-</x-app-layout>
+</x-layouts.app>
