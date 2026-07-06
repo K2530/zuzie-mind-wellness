@@ -29,10 +29,10 @@
               @foreach ($assessment['questions'] as $index => $question)
                 @php
                     $isCustomOptions = is_array($question) && isset($question['options']);
-                    $isComplexText = is_array($question) && isset($question['text_en']);
+                    $isBoolean = is_array($question) && isset($question['type']) && $question['type'] === 'boolean';
                     
-                    $qText = $isCustomOptions || $isComplexText ? $question['text'] : $question;
-                    $qTextEn = $isCustomOptions || $isComplexText ? ($question['text_en'] ?? $qText) : $qText;
+                    $qText = is_array($question) && isset($question['text']) ? $question['text'] : (is_array($question) ? '' : $question);
+                    $qTextEn = is_array($question) && isset($question['text_en']) ? $question['text_en'] : $qText;
                     
                     if (is_string($qText) && str_starts_with(trim($qText), '{')) {
                         $parsed = json_decode($qText, true);
@@ -51,9 +51,14 @@
                         }
                     }
                     
-                    $options = $isCustomOptions ? $question['options'] : ($assessment['options'] ?? [0 => 'ไม่เลย', 1 => 'เล็กน้อย', 2 => 'บ่อยครั้ง', 3 => 'มากที่สุด']);
-                    $optionsEn = $isCustomOptions ? ($question['options_en'] ?? $options) : ($assessment['options_en'] ?? [0 => 'Not at all', 1 => 'A little', 2 => 'Often', 3 => 'Most of the time']);
-                    $isGrid = !$isCustomOptions;
+                    if ($isBoolean) {
+                        $options = [0 => 'ไม่มี', 1 => 'มี'];
+                        $optionsEn = [0 => 'No', 1 => 'Yes'];
+                    } else {
+                        $options = $isCustomOptions ? $question['options'] : ($assessment['options'] ?? [0 => 'ไม่เลย', 1 => 'เล็กน้อย', 2 => 'บ่อยครั้ง', 3 => 'มากที่สุด']);
+                        $optionsEn = $isCustomOptions ? ($question['options_en'] ?? $options) : ($assessment['options_en'] ?? [0 => 'Not at all', 1 => 'A little', 2 => 'Often', 3 => 'Most of the time']);
+                    }
+                    $isGrid = !$isCustomOptions && !$isBoolean;
                 @endphp
                 <fieldset class="rounded-lg border border-reseda/10 bg-milk/70 p-4 sm:p-5">
                   <legend class="px-1 text-base font-bold leading-7 text-ink">

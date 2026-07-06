@@ -64,8 +64,8 @@
             @foreach ($assessment['questions'] as $index => $question)
               @php
                   $isCustomOptions = is_array($question) && isset($question['options']);
-                  $qText = $isCustomOptions ? $question['text'] : $question;
-                  $qTextEn = $isCustomOptions ? ($question['text_en'] ?? $qText) : ($question['text_en'] ?? $qText);
+                  $qText = is_array($question) && isset($question['text']) ? $question['text'] : (is_array($question) ? '' : $question);
+                  $qTextEn = is_array($question) && isset($question['text_en']) ? $question['text_en'] : $qText;
                   
                   // Need to deduce max points for this specific question
                   $options = $isCustomOptions ? $question['options'] : ($assessment['options'] ?? [0,1,2,3]);
