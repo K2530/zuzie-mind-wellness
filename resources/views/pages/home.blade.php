@@ -39,26 +39,15 @@
       </div>
 
       <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        @foreach ($assessments as $card)
-          <article class="soft-card overflow-hidden">
-            <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover {{ $card['pos'] }}">
-            <div class="p-5">
-              <p class="text-sm text-ink/65" data-i18n="assessmentLabel"></p>
-              <h3 class="mt-1 text-xl font-bold" data-i18n="{{ $card['key'] }}"></h3>
-              <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70" data-i18n="{{ $card['desc'] }}"></p>
-              @php
-                $slugMap = [
-                  'stress' => 'spst-20',
-                  'depression' => 'depression-9q',
-                  'anxiety' => 'resilience-rq',
-                  'relationship' => 'depression-9q',
-                ];
-                $slug = $slugMap[$card['key']] ?? $card['key'];
-              @endphp
-              <a href="{{ route('assessment.show', $slug) }}" class="btn-secondary mt-4 w-full" data-i18n="startNow"></a>
-            </div>
-          </article>
-        @endforeach
+        <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[58%_42%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินเฉพาะทาง</p>
+            <h3 class="mt-1 text-xl font-bold">โรคเครียดหลังเหตุการณ์สะเทือนขวัญ (2P)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">ประเมินความเสี่ยงต่อการเกิดโรคเครียดหลังเหตุการณ์สะเทือนขวัญ (PTSD)</p>
+            <a href="{{ route('assessment.show', '2p') }}" class="btn-secondary mt-4 w-full" data-i18n="startNow">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
       </div>
     </section>
 
