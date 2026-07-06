@@ -68,31 +68,7 @@
         </div>
       </section>
 
-      @if(!empty($videos))
-      <section class="mt-8">
-        <h2 class="mb-6 text-2xl font-bold text-ink">คลิปวิดีโอแนะนำ</h2>
-        <div class="grid gap-6 md:grid-cols-2">
-          @foreach($videos as $video)
-          <div class="card overflow-hidden group">
-            <div class="relative aspect-video overflow-hidden">
-              <img src="{{ $video['thumbnail'] }}" alt="{{ $video['title'] }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              <div class="absolute inset-0 flex items-center justify-center bg-ink/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <div class="flex size-14 items-center justify-center rounded-full bg-white shadow-lg">
-                  <svg class="ml-1 size-6 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                </div>
-              </div>
-            </div>
-            <div class="p-5">
-              <h3 class="mb-2 line-clamp-2 text-base font-bold text-ink group-hover:text-primary transition-colors">{{ $video['title'] }}</h3>
-              <a href="{{ $video['url'] }}" target="_blank" class="mt-4 inline-flex items-center text-sm font-semibold text-primary hover:text-primary-dark">
-                รับชมวิดีโอ <svg class="ml-1 size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-              </a>
-            </div>
-          </div>
-          @endforeach
-        </div>
-      </section>
-      @endif
+      
 
     </div>
   </div>
