@@ -407,12 +407,23 @@ Route::post('/assessment/{assessment}', function (string $assessment) use ($secu
     $questionCount = count($assessmentItem['questions']);
     $options = $assessmentItem['options'] ?? [0 => 'ไม่เลย', 1 => 'เล็กน้อย', 2 => 'บ่อยครั้ง', 3 => 'มากที่สุด'];
     $optionsKeys = array_keys($options);
-    $minVal = min($optionsKeys);
-    $maxVal = max($optionsKeys);
+    $globalMinVal = min($optionsKeys);
+    $globalMaxVal = max($optionsKeys);
     $rules = [];
+    $maxScore = 0;
 
     for ($index = 0; $index < $questionCount; $index++) {
-        $rules["answers.$index"] = ['required', 'integer', "between:$minVal,$maxVal"];
+        $q = $assessmentItem['questions'][$index];
+        if (is_array($q) && isset($q['options'])) {
+            $qKeys = array_keys($q['options']);
+            $qMin = min($qKeys);
+            $qMax = max($qKeys);
+        } else {
+            $qMin = $globalMinVal;
+            $qMax = $globalMaxVal;
+        }
+        $rules["answers.$index"] = ['required', 'integer', "between:$qMin,$qMax"];
+        $maxScore += $qMax;
     }
 
     $validated = request()->validate($rules, [
@@ -426,12 +437,12 @@ Route::post('/assessment/{assessment}', function (string $assessment) use ($secu
     $reverseScoring = $assessmentItem['reverse_scoring'] ?? [];
     foreach ($answers as $index => $val) {
         if (in_array($index, $reverseScoring)) {
-            $score += ($minVal + $maxVal - $val);
+            $score += ($globalMinVal + $globalMaxVal - $val);
         } else {
             $score += $val;
         }
     }
-    $maxScore = $questionCount * $maxVal;
+
     $percent = (int) round(($score / $maxScore) * 100);
 
     $band = null;
