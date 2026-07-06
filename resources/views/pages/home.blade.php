@@ -124,6 +124,16 @@
         </article>
 
         <article class="soft-card overflow-hidden">
+          <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[64%_45%]">
+          <div class="p-5">
+            <p class="text-sm text-ink/65">แบบประเมินสำหรับเด็ก</p>
+            <h3 class="mt-1 text-xl font-bold">คัดกรองออทิซึม (PDDSQ)</h3>
+            <p class="mt-3 min-h-14 text-sm leading-6 text-ink/70">แบบประเมิน PDDSQ ฉบับย่อ 25 ข้อ สำหรับเด็กช่วงอายุ 1-4 ปี</p>
+            <a href="{{ route('assessment.show', 'pddsq') }}" class="btn-secondary mt-4 w-full">เริ่มทำแบบประเมิน</a>
+          </div>
+        </article>
+
+        <article class="soft-card overflow-hidden">
           <img src="{{ asset('assets/images/hero-woman-tea.webp') }}" alt="" class="h-36 w-full object-cover object-[65%_45%]">
           <div class="p-5">
             <p class="text-sm text-ink/65">แบบประเมินเบื้องต้น</p>

@@ -479,6 +479,53 @@ Route::post('/assessment/ld-{level}', function ($level) {
     ]);
 });
 
+
+Route::post('/assessment/pddsq', function () {
+    $assessmentItem = collect(config('zuzie.assessment_page_items'))
+        ->firstWhere('slug', 'pddsq');
+
+    abort_unless($assessmentItem, 404);
+
+    $rules = [];
+    foreach ($assessmentItem['questions'] as $index => $q) {
+        $rules["answers.$index"] = ['required', 'integer', 'between:0,1'];
+    }
+
+    $validated = request()->validate($rules, [
+        'answers.*.required' => 'กรุณาตอบคำถามให้ครบทุกข้อ',
+        'answers.*.between' => 'คำตอบไม่ถูกต้อง',
+    ]);
+
+    $answers = array_map('intval', $validated['answers']);
+
+    $score = 0;
+    // Reverse scoring for group 1 (0-4), group 3 (10-14), group 5 (20-24)
+    $reverse_indices = [0,1,2,3,4, 10,11,12,13,14, 20,21,22,23,24];
+    
+    foreach ($answers as $index => $ans) {
+        if (in_array($index, $reverse_indices)) {
+            $score += (1 - $ans);
+        } else {
+            $score += $ans;
+        }
+    }
+
+    $resultBand = null;
+    foreach ($assessmentItem['bands'] as $minScore => $band) {
+        if ($score >= $minScore) {
+            $resultBand = $band;
+            break;
+        }
+    }
+
+    return view('pages.assessment.result', [
+        'assessment' => $assessmentItem,
+        'score' => $score,
+        'band' => $resultBand,
+        'answers' => $answers,
+    ]);
+});
+
 Route::post('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
         ->firstWhere('slug', $assessment);
