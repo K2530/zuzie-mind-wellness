@@ -584,9 +584,11 @@ Route::post('/assessment/pddsq', function () {
         }
     }
 
-    return view('pages.assessment.result', [
+        return view('pages.assessment.result', [
         'assessment' => $assessmentItem,
         'score' => $score,
+        'maxScore' => 25,
+        'percent' => (int) round(($score / 25) * 100),
         'band' => $resultBand,
         'answers' => $answers,
     ]);
@@ -1274,13 +1276,13 @@ Route::post('/assessment/cmhi', function () use ($securityHeaders) {
         ])
         ->withHeaders($securityHeaders);
 })->name('assessment.cmhi.submit');
-Route::post('/assessment/{assessment}', function ($assessmentSlug) {
-    if (!in_array($assessmentSlug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
+Route::post('/assessment/{sdq_slug}', function ($sdq_slug) {
+    if (!in_array($sdq_slug, ['sdq-self', 'sdq-parent', 'sdq-teacher'])) {
         abort(404);
     }
     
     $assessmentItem = collect(config('zuzie.assessment_page_items'))
-        ->firstWhere('slug', $assessmentSlug);
+        ->firstWhere('slug', $sdq_slug);
 
     abort_unless($assessmentItem, 404);
 
@@ -1354,7 +1356,7 @@ Route::post('/assessment/{assessment}', function ($assessmentSlug) {
         ],
     ];
 
-    $c = $cutoffs[$assessmentSlug];
+    $c = $cutoffs[$sdq_slug];
 
     return view('pages.assessment.result-sdq', [
         'assessment' => $assessmentItem,
