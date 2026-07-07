@@ -1364,7 +1364,7 @@ Route::post('/assessment/{assessment}', function ($assessmentSlug) {
         'total_difficulties' => $total_difficulties,
         'cutoffs' => $c,
     ]);
-})->where('assessment', 'sdq-(self|parent|teacher)');
+})->where('sdq_slug', 'sdq-(self|parent|teacher)');
 
 
 Route::post('/assessment/{assessment}', function (string $assessment) use ($securityHeaders) {
